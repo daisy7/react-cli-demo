@@ -1,0 +1,8 @@
+.logoImg {
+    /* background: url(./smc-logo.jpg)  no-repeat center; */
+    background: pink;
+}
+.logoStyle {
+    width: 318px;
+    height: 81px;
+}
