@@ -17,7 +17,7 @@ class Login extends Component {
             <div className={cssObj.Login}>
                 <LoginNav></LoginNav>
                 <div className={cssObj.bgDiv}>
-                <Logo  logoStyle="logoStyle"></Logo>
+                <Logo width="400px" height="90px"></Logo>
                 <LoginContain></LoginContain>
                 <button onClick= {()=> history.push({pathname:'/main'})}>跳转</button>
                 </div>

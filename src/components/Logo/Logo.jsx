@@ -1,7 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import cssObj from "./Logo.css";
-function Logo(props) {
-    const { logoStyle } = props
-        return <div className={[cssObj.logoImg,cssObj.logoStyle].join(' ')}></div>
+
+class Logo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <div>
+                <div className={[cssObj.logoImg, cssObj.logoStyle].join(' ')} style={{ width: this.props.width,height:this.props.height }} ></div>
+            </div>
+        )
+    }
 }
+
 export default Logo
