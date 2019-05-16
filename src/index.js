@@ -5,6 +5,9 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Router from '@/config/router';
 
+const sdk = require('./app.bundle.js')
+console.log(sdk)
+
 ReactDOM.render(<Router />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
