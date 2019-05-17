@@ -3,6 +3,7 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import history from '@/config/history';
 import { regExpConfig } from '@/config/Reg.confing'
 import cssObj from './LoginContain.css'
+import intl from '@/config/i18n'
 
 // import sdk from '@/sdk.js'
 const FormItem = Form.Item;
@@ -38,7 +39,7 @@ class LoginContain extends Component {
             ],
 
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder={intl.get('username')} />
           )}
         </FormItem>
         <FormItem>
@@ -48,7 +49,7 @@ class LoginContain extends Component {
               { pattern: regExpConfig.pwd, message: '密码由6-16位数字或者字母组成' },
             ],
           })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder={intl.get('password')}/>
           )}
         </FormItem>
         <FormItem>
@@ -56,10 +57,10 @@ class LoginContain extends Component {
             valuePropName: 'checked',
             initialValue: true,
           })(
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>{intl.get('remember_me')}</Checkbox>
           )}
           <Button type="primary" htmlType="submit" className={cssObj.formButton}>
-            Log in
+          {intl.get('login')}
               </Button>
         </FormItem>
       </Form>

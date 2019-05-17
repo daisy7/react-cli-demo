@@ -4,6 +4,7 @@ import LoginNav from "@/components/LoginNav/LoginNav.jsx"
 import Logo from "@/components/Logo/Logo.jsx"
 import LoginContain from "@/components/LoginContain/LoginContain"
 import history from '@/config/history';
+import intl from '@/config/i18n'
 class Login extends Component {
     constructor(){
         super()
@@ -19,7 +20,7 @@ class Login extends Component {
                 <div className={cssObj.bgDiv}>
                 <Logo width="400px" height="90px"></Logo>
                 <LoginContain></LoginContain>
-                <button onClick= {()=> history.push({pathname:'/main'})}>跳转</button>
+                <button onClick= {()=> history.push({pathname:'/main'})}>{intl.get('redirect')}</button>
                 </div>
             </div>
         )
