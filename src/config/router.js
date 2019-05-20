@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import history from '@/config/history'
 import * as base from '@/views'
 

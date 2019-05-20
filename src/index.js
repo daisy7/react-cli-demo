@@ -4,8 +4,9 @@ import './index.css';
 // import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Router from '@/config/router';
-import { LocaleProvider, Radio } from 'antd';
-import { setLang, antd_locale } from '@/config/i18n'
+import { LocaleProvider } from 'antd';
+import { antd_locale } from '@/config/i18n'
+import store from './store.js';
 
 const sdk = require('./app.bundle.js')
 
@@ -13,31 +14,20 @@ class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            locale: null,
+            locale:store.getState().locale
         };
+        this.handleStoreChange = this.handleStoreChange.bind(this);
+        store.subscribe(this.handleStoreChange);
     }
-    changeLocale = e => {
-        setLang(e.target.value)
-        this.setState({ locale: antd_locale });
-    };
+    handleStoreChange() {
+        let locale = store.getState().locale;
+        this.setState({ locale })
+    }
     render() {
         return (
-            <div>
-                <div className="change-locale">
-                    <span style={{ marginRight: 16 }}>Change locale of components: </span>
-                    <Radio.Group defaultValue="en-US" onChange={this.changeLocale}>
-                        <Radio.Button key="en" value="en-US">
-                            English
-                </Radio.Button>
-                        <Radio.Button key="cn" value="zh-CN">
-                            中文
-                </Radio.Button>
-                    </Radio.Group>
-                </div>
-                <LocaleProvider locale={this.state.locale}>
-                    <Router/>
-                </LocaleProvider>
-            </div>
+            <LocaleProvider locale={antd_locale}>
+                <Router />
+            </LocaleProvider>
         );
     }
 }
