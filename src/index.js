@@ -4,8 +4,8 @@ import './index.css';
 // import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Router from '@/config/router';
-import { LocaleProvider,Radio } from 'antd';
-import { i18n } from '@/config/i18n'
+import { LocaleProvider, Radio } from 'antd';
+import { setLang, antd_locale } from '@/config/i18n'
 
 const sdk = require('./app.bundle.js')
 
@@ -17,11 +17,10 @@ class App extends React.Component {
         };
     }
     changeLocale = e => {
-        i18n.setLang(e.target.value)
-        this.setState({ locale: i18n.antd_locale });
+        setLang(e.target.value)
+        this.setState({ locale: antd_locale });
     };
     render() {
-        const { locale } = this.state;
         return (
             <div>
                 <div className="change-locale">
@@ -35,7 +34,7 @@ class App extends React.Component {
                 </Radio.Button>
                     </Radio.Group>
                 </div>
-                <LocaleProvider locale={locale}>
+                <LocaleProvider locale={this.state.locale}>
                     <Router/>
                 </LocaleProvider>
             </div>
