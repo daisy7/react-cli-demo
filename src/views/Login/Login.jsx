@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import cssObj from "./Login.css";
-import LoginNav from "@/components/LoginNav/LoginNav.jsx"
+import LoginNav from "./LoginNav/LoginNav.jsx"
 import Logo from "@/components/Logo/Logo.jsx"
-import LoginContain from "@/components/LoginContain/LoginContain"
+import LoginContain from "./LoginContain/LoginContain"
 import history from '@/config/history';
 import intl, { moment } from '@/config/i18n'
 import { Calendar } from 'antd';

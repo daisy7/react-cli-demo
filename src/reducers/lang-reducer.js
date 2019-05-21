@@ -1,6 +1,6 @@
 // src/reducers/cart-reducer.js
 
-import { UPDATE_CART,DELETE_FROM_CART,CHANGE_LOCALE } from '../actions/cart-actions';
+import { UPDATE_CART,DELETE_FROM_CART,CHANGE_LOCALE } from '../actions/lang-actions';
 import {setLang} from '@/config/i18n'
 
 const initialState = {

@@ -10,13 +10,13 @@ const locales = {
         name: "English",
         custom: enUS,
         antd: undefined,
-        monmen: "en"
+        moment: "en"
     },
     'zh-CN': {
         name: '简体中文',
         custom: zhCN,
         antd: antd_zhCN,
-        monmen: "zh-cn"
+        moment: "zh-cn"
     }
 }
 
