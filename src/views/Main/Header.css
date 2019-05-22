@@ -1,0 +1,14 @@
+.navStyle {
+    padding: 0 3%;
+}
+.LogoBox{
+    float: left;
+    margin-right: 5%;
+}
+.navStyle :global(.ant-menu-horizontal){
+    border: none;
+}
+.navStyle :global(.ant-menu){
+    color:#fff;
+    background-color: rgba(0, 0, 0, 0)
+}

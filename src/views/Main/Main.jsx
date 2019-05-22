@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import history from '@/config/history';
-
+import Header from './Header'
+import cssObj from './Main.css'
 class Main extends Component {
-    render() {
-        return (
-            <div>
-                <div>main页面</div>
-                <div onClick={() => history.push('/login')}>返回login</div>
-            </div>
-        )
+    render(){
+        return <div className={cssObj.Main}>
+        <Header></Header>
+        </div>
     }
 }
 export default Main
