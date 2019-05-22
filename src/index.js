@@ -8,7 +8,9 @@ import { LocaleProvider } from 'antd';
 import { antd_locale } from '@/config/i18n'
 import store from './store.js';
 
-const sdk = require('./app.bundle.js')
+// const sdk = require('./app.bundle.js')
+/* eslint-disable */
+console.log(hwSDK);
 
 class App extends React.Component {
     constructor() {
