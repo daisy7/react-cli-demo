@@ -43,7 +43,7 @@ class LoginContain extends Component {
           clearCookie('userName');
           clearCookie('password');
         }
-        // history.push({ pathname: '/main' })
+        history.push({ pathname: '/main' })
 
         // sdk.SMCSDK_User_Auth.login(values)
 
