@@ -7,9 +7,9 @@ const BasicRoute = () => (
     <Router history={history}>
         <Switch>
             <Route exact  path="/" render={() => {
-                return <Redirect to="/login" />
+                return <Redirect to="/user/login" />
             }} />
-            <Route exact path="/login" component={base.Login} />
+            <Route path="/user" component={base.Login} />
             <Route exact path="/main" component={base.Main} />
         </Switch>
     </Router>

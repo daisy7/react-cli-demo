@@ -25,3 +25,8 @@
   height: 81px;
   /* background: url(./images/smc-logo.jpg)  no-repeat center bottom; */
 }
+.navRight {
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(255, 255, 255, 0);
+}
