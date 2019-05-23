@@ -21,8 +21,6 @@ class LoginContain extends Component {
       userName:getCookie('userName'),
       password:getCookie('password')
     })
-    console.log(getCookie('userName'))
-    console.log(getCookie('password'))
   }
   handleSubmit = (e) => {
     e.preventDefault();
