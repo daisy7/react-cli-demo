@@ -1,0 +1,13 @@
+.bottom {
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 98%;
+    display: flex;
+    justify-content: space-between;
+    
+}
+.bottomRight{
+    display: inline-block;
+   
+}

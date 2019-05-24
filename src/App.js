@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react';
+import Router from '@/config/router';
+import { LocaleProvider } from 'antd';
+import { antd_locale } from '@/config/i18n'
+import store from './store.js';
+import './App.css'
+
+class App extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            locale:store.getState().locale
+        };
+        this.handleStoreChange = this.handleStoreChange.bind(this);
+        store.subscribe(this.handleStoreChange);
+    }
+    handleStoreChange() {
+        let locale = store.getState().locale;
+        this.setState({ locale })
+    }
+    render() {
+        return (
+            <LocaleProvider locale={antd_locale}>
+                <Router />
+            </LocaleProvider>
+        );
+    }
 }
 
-export default App;
+export default App

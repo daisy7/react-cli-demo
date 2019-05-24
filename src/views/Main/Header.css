@@ -12,3 +12,10 @@
     color:#fff;
     background-color: rgba(0, 0, 0, 0)
 }
+.middleNav {
+    width: 50%;
+    display: inline-block;
+}
+.toolBox {
+    float: right;
+}
