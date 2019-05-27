@@ -19,7 +19,8 @@ global.menus = [
         icon: 'bulb',
         key: '/meeting',
         subs: [
-            { key: '/main/c1cbd7', title: '淡蓝', icon: '' },
+            { key: '/main/color/c1cbd7', title: '淡蓝', icon: '' },
+            { key: '/main/meetCreate', title: '创建会议', icon: '' },
         ]
     },
     {
@@ -103,13 +104,13 @@ class Header extends Component {
                     <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />帮助</a>
                 </Menu.Item>
                 <Menu.Item key="96a48b">
-                    <Link to="/main/96a48b">淡绿</Link>
+                    <Link to="/main/color/96a48b">淡绿</Link>
                 </Menu.Item>
                 <Menu.Item key="c9c0d3">
-                    <Link to="/main/c9c0d3">浅紫</Link>
+                    <Link to="/main/color/c9c0d3">浅紫</Link>
                 </Menu.Item>
                 <Menu.Item key="b7b1a5">
-                    <Link to="/main/b7b1a5">淡棕</Link>
+                    <Link to="/main/color/b7b1a5">淡棕</Link>
                 </Menu.Item>
             </Menu>
         </div>)

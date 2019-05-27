@@ -8,3 +8,9 @@
   background: pink;
   background-size: cover;
 }
+.content {
+  background-color: #fff;
+  border-radius: 5px 5px 0 0;
+  border: 6px solid white;
+  height: calc(100% - 70px);
+}
