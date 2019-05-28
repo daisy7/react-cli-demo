@@ -5,9 +5,6 @@ import Logo from '@/components/Logo/Logo'
 import LangDrop from '@/components/LangDrop/LangDrop'
 import cssObj from './Header.css'
 import intl from '@/config/i18n'
-import { Link } from 'react-router-dom';
-import history from '@/config/history';
-
 const SubMenu = Menu.SubMenu;
 global.menus = [
     {
@@ -17,31 +14,46 @@ global.menus = [
     }, {
         title: '会议',
         icon: 'bulb',
-        key: '/meeting',
+        key: '/main/meeting/blue',
         subs: [
-            { key: '/main/color/c1cbd7', title: '淡蓝', icon: '' },
-            { key: '/main/meetCreate', title: '创建会议', icon: '' },
+            { key: '/main/meeting/blue', title: intl.get('blue'), icon: '' },
+            { key: '/main/meeting/meetCreate', title: intl.get('meetCreate'), icon: '' },
+            { key: '/main/meeting/ConferenceTemplate', title: intl.get('ConferenceTemplate'), icon: '' },
+            { key: '/main/meeting/ScheduledConference', title: intl.get('ScheduledConference'), icon: '' },
+            { key: '/main/meeting/HistoryConference', title: intl.get('HistoryConference'), icon: '' },
         ]
     },
     {
-        title: '设置',
+        title: '设备',
         icon: 'bulb',
-        key: '/setting',
+        key: '/device/1',
         subs: [
-            { key: '/page/1', title: '弹出框', icon: '' },
-            { key: '/page/2', title: '弹出框', icon: '' },
+            { key: '/main/device/sites', title: '会场', icon: '' },
+            { key: '/main/device/mcu', title: 'mcu', icon: '' },
+            { key: '/main/device/sc', title: 'sc', icon: '' },
+            {
+                key: '/main/device/SoftwareManage',
+                title: '升级',
+                icon: '',
+                subs: [
+                    { key: '/main/device/SoftwareManage', title: '软件管理', icon: '' },
+                    { key: '/main/device/DeviceUpgrade', title: '会场/mcu升级', icon: '' },
+                ]
+            },
+        ]
+    },
+    {
+        title: '系统',
+        icon: 'bulb',
+        key: '/system/1',
+        subs: [
+            { key: '/main/system/Config', title: '配置', icon: '' },
+            { key: '/main/system/user', title: '用户&组织类型', icon: '' },
         ]
     },
 ]
 const menus = global.menus;
 class Header extends Component {
-    constructor() {
-        super()
-        this.state = {
-            theme: "light",
-            current:""
-        }
-    }
     renderSubMenu = ({ key, icon, title, subs }) => {
         return (
             <Menu.SubMenu key={key} title={<span>{icon && <Icon type={icon} />}<span>{title}</span></span>}>
@@ -63,6 +75,12 @@ class Header extends Component {
             </Menu.Item>
         )
     }
+    constructor() {
+        super()
+        this.state = {
+            theme: "light"
+        }
+    }
     getInitialState() {
         return {
             current: 'mail'
@@ -70,16 +88,14 @@ class Header extends Component {
     };
     handleClick(e) {
         console.log('click ', e);
-        history.push({ pathname: e.key });
-        // this.setState({
-        //     current: e.key
-        // })
+        this.setState({
+            current: e.key
+        })
     };
     render() {
-        return (<div className={cssObj.navStyle}>
+        return <div className={cssObj.navStyle}>
             <div className={cssObj.LogoBox}><Logo width='120px' height='45px' float='left'></Logo></div>
             <Menu
-                onClick={this.handleClick}
                 defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
                 theme={this.state.theme}
@@ -91,9 +107,6 @@ class Header extends Component {
                         return item.subs && item.subs.length > 0 ? this.renderSubMenu(item) : this.renderMenuItem(item)
                     })
                 }
-            </Menu>
-            <Menu theme={this.state.theme}
-                mode="horizontal" className={cssObj.toolBox}>
                 <Menu.Item key="alipay1">
                     <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />修改</a>
                 </Menu.Item>
@@ -103,17 +116,8 @@ class Header extends Component {
                 <Menu.Item key="alipay2">
                     <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />帮助</a>
                 </Menu.Item>
-                <Menu.Item key="96a48b">
-                    <Link to="/main/color/96a48b">淡绿</Link>
-                </Menu.Item>
-                <Menu.Item key="c9c0d3">
-                    <Link to="/main/color/c9c0d3">浅紫</Link>
-                </Menu.Item>
-                <Menu.Item key="b7b1a5">
-                    <Link to="/main/color/b7b1a5">淡棕</Link>
-                </Menu.Item>
             </Menu>
-        </div>)
+        </div>
     }
 }
 export default Header

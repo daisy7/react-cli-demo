@@ -6,6 +6,13 @@ const en_US = {
     remember_me:"Remember Me",
     redirect:"Redirect",
     username:"Username",
-    password:"Password"
+    password:"Password",
+    main:"home",
+    meeting:"meeting",
+    meetCreate:"meetCreate",
+    blue:"blue",
+    ConferenceTemplate:"ConferenceTemplate",
+    ScheduledConference:"ScheduledConference",
+    HistoryConference:"HistoryConference"
 }    
 export default en_US;
