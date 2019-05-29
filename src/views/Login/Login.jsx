@@ -53,7 +53,7 @@ class Login extends Component {
                         <LangDrop></LangDrop>
                     </Menu.Item>
                     <Menu.Item key="alipay">
-                        <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />帮助</a>
+                        <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{intl.get('help')}</a>
                     </Menu.Item>
                 </Menu>
                 <div className={cssObj.bgDiv}>

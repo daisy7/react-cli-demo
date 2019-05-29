@@ -6,57 +6,59 @@ import LangDrop from '@/components/LangDrop/LangDrop'
 import cssObj from './Header.css'
 import intl from '@/config/i18n'
 const SubMenu = Menu.SubMenu;
-global.menus = [
-    {
-        title: '首页',
-        icon: 'page',
-        key: '/main'
-    }, {
-        title: '会议',
-        icon: 'bulb',
-        key: '/main/meeting/blue',
-        subs: [
-            { key: '/main/meeting/blue', title: intl.get('blue'), icon: '' },
-            { key: '/main/meeting/meetCreate', title: intl.get('meetCreate'), icon: '' },
-            { key: '/main/meeting/ConferenceTemplate', title: intl.get('ConferenceTemplate'), icon: '' },
-            { key: '/main/meeting/ScheduledConference', title: intl.get('ScheduledConference'), icon: '' },
-            { key: '/main/meeting/HistoryConference', title: intl.get('HistoryConference'), icon: '' },
-        ]
-    },
-    {
-        title: '设备',
-        icon: 'bulb',
-        key: '/device/1',
-        subs: [
-            { key: '/main/device/sites', title: '会场', icon: '' },
-            { key: '/main/device/mcu', title: 'mcu', icon: '' },
-            { key: '/main/device/sc', title: 'sc', icon: '' },
-            {
-                key: '/main/device/SoftwareManage',
-                title: '升级',
-                icon: '',
-                subs: [
-                    { key: '/main/device/SoftwareManage', title: '软件管理', icon: '' },
-                    { key: '/main/device/DeviceUpgrade', title: '会场/mcu升级', icon: '' },
-                ]
-            },
-        ]
-    },
-    {
-        title: '系统',
-        icon: 'bulb',
-        key: '/system/1',
-        subs: [
-            { key: '/main/system/Config', title: '配置', icon: '' },
-            { key: '/main/system/user', title: '用户&组织类型', icon: '' },
-        ]
-    },
-]
-const menus = global.menus;
+let match = {}
 class Header extends Component {
-    renderSubMenu = ({ key, icon, title, subs }) => {
+    constructor(props) {
+        super()
+        this.state = {
+            theme: "light",
+            menus: [
+                {
+                    icon: 'page',
+                    key: '/main'
+                }, {
+                    icon: 'bulb',
+                    key: '/main/meeting',
+                    subs: [
+                        { key: '/main/meeting/blue',  icon: '' },
+                        { key: '/main/meeting/meetCreate',  icon: '' },
+                        { key: '/main/meeting/ConferenceTemplate',  icon: '' },
+                        { key: '/main/meeting/ScheduledConference', icon: '' },
+                        { key: '/main/meeting/HistoryConference', icon: '' },
+                    ]
+                },
+                {
+                    icon: 'bulb',
+                    key: '/device',
+                    subs: [
+                        { key: '/main/device/sites',icon: '' },
+                        { key: '/main/device/mcu',  icon: '' },
+                        { key: '/main/device/sc', icon: '' },
+                        {
+                            key: '/main/device/SoftwareManage',
+                            icon: '',
+                            subs: [
+                                { key: '/main/device/SoftwareManage', icon: '' },
+                                { key: '/main/device/DeviceUpgrade',  icon: '' },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    icon: 'bulb',
+                    key: '/system',
+                    subs: [
+                        { key: '/main/system/config/', icon: '' },
+                        { key: '/main/system/user', icon: '' },
+                    ]
+                },
+            ]
+        }
+        match = props.match;
+    }
+    renderSubMenu = ({ key, icon, subs }) => {
         return (
-            <Menu.SubMenu key={key} title={<span>{icon && <Icon type={icon} />}<span>{title}</span></span>}>
+            <Menu.SubMenu key={key} title={<span>{icon && <Icon type={icon} />}<span>{intl.get(key.split('/').filter(i => i).pop())}</span></span>}>
                 {
                     subs && subs.map(item => {
                         return item.subs && item.subs.length > 0 ? this.renderSubMenu(item) : this.renderMenuItem(item)
@@ -65,33 +67,16 @@ class Header extends Component {
             </Menu.SubMenu>
         )
     }
-    renderMenuItem = ({ key, icon, title, }) => {
+    renderMenuItem = ({ key, icon }) => {
         return (
             <Menu.Item key={key}>
                 <NavLink to={key}>
                     {icon && <Icon type={icon} />}
-                    <span>{title}</span>
+                    <span>{intl.get(key.split('/').filter(i => i).pop())}</span>
                 </NavLink>
             </Menu.Item>
         )
     }
-    constructor() {
-        super()
-        this.state = {
-            theme: "light"
-        }
-    }
-    getInitialState() {
-        return {
-            current: 'mail'
-        };
-    };
-    handleClick(e) {
-        console.log('click ', e);
-        this.setState({
-            current: e.key
-        })
-    };
     render() {
         return <div className={cssObj.navStyle}>
             <div className={cssObj.LogoBox}><Logo width='120px' height='45px' float='left'></Logo></div>
@@ -103,18 +88,18 @@ class Header extends Component {
                 className={cssObj.middleNav}
             >
                 {
-                    menus.map(item => {
+                    this.state.menus.map(item => {
                         return item.subs && item.subs.length > 0 ? this.renderSubMenu(item) : this.renderMenuItem(item)
                     })
                 }
                 <Menu.Item key="alipay1">
-                    <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />修改</a>
+                    <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{intl.get('modfied')}</a>
                 </Menu.Item>
                 <Menu.Item>
                     <LangDrop></LangDrop>
                 </Menu.Item>
                 <Menu.Item key="alipay2">
-                    <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />帮助</a>
+                    <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{intl.get('help')}</a>
                 </Menu.Item>
             </Menu>
         </div>

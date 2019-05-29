@@ -13,6 +13,18 @@ const en_US = {
     blue:"blue",
     ConferenceTemplate:"ConferenceTemplate",
     ScheduledConference:"ScheduledConference",
-    HistoryConference:"HistoryConference"
+    HistoryConference:"HistoryConference",
+    main:"home",
+    help:"help",
+    device: "device",
+    sites: "sites",
+    mcu: "mcu",
+    sc: "sc",
+    SoftwareManage: "SoftwareManage",
+    DeviceUpgrade: "DeviceUpgrade",
+    system:"system",
+    config:"config",
+    user:"user",
+    modfied:"modfied"
 }    
 export default en_US;
