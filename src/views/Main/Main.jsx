@@ -5,7 +5,7 @@ import cssObj from './Main.css'
 import Meeting from '@/views/meetCreate'
 import Config from '@/views/system/Config/Config'
 import defaultIndex from './defaultIndex'
-import { Route, Link, Switch, withRouter } from 'react-router-dom';
+import { Route, Link, Switch, withRouter, Redirect } from 'react-router-dom';
 import { Icon, Breadcrumb, Alert } from 'antd';
 import intl from '@/config/i18n'
 
@@ -28,10 +28,12 @@ const Main = withRouter(props => {
             <Header></Header>
             <Breadcrumb>{breadcrumbItems}</Breadcrumb>
             <div className={cssObj.content}>
-                <Route exact path={`${match.url}`} component={defaultIndex}></Route>
-                <Route path={`${match.url}/meeting/blue`} component={Topic} />
-                <Route path={`${match.url}/meeting/meetCreate`} component={Meeting.meetCreate}></Route>
-                <Route path={`${match.url}/system/Config`} component={Config}></Route>
+                <Switch>
+                    <Route exact path={`${match.url}`} component={defaultIndex}></Route>
+                    <Route path={`${match.url}/meeting/blue`} component={Topic} />
+                    <Route path={`${match.url}/meeting/meetCreate`} component={Meeting.meetCreate}></Route>
+                    <Route path={`${match.url}/system/config`} component={Config}></Route>
+                </Switch>
             </div>
             <Bottom></Bottom>
         </div>

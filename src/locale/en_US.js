@@ -25,6 +25,7 @@ const en_US = {
     system:"system",
     config:"config",
     user:"user",
-    modfied:"modfied"
+    modfied:"modfied",
+    conference:"conference"
 }    
 export default en_US;

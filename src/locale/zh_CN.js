@@ -25,6 +25,7 @@ const zh_CN = {
     system:"系统",
     config:"配置",
     user:"用户&组织类型",
-    modfied:"修改"
+    modfied:"修改",
+    conference:"会议"
 }
 export default zh_CN;  

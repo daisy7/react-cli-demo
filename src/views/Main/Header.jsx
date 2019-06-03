@@ -7,52 +7,52 @@ import cssObj from './Header.css'
 import intl from '@/config/i18n'
 const SubMenu = Menu.SubMenu;
 let match = {}
+const menus = [
+    {
+        icon: 'page',
+        key: '/main'
+    }, {
+        icon: 'bulb',
+        key: '/main/meeting',
+        subs: [
+            { key: '/main/meeting/blue', icon: '' },
+            { key: '/main/meeting/meetCreate', icon: '' },
+            { key: '/main/meeting/ConferenceTemplate', icon: '' },
+            { key: '/main/meeting/ScheduledConference', icon: '' },
+            { key: '/main/meeting/HistoryConference', icon: '' },
+        ]
+    },
+    {
+        icon: 'bulb',
+        key: '/device',
+        subs: [
+            { key: '/main/device/sites', icon: '' },
+            { key: '/main/device/mcu', icon: '' },
+            { key: '/main/device/sc', icon: '' },
+            {
+                key: '/main/device/SoftwareManage',
+                icon: '',
+                subs: [
+                    { key: '/main/device/SoftwareManage', icon: '' },
+                    { key: '/main/device/DeviceUpgrade', icon: '' },
+                ]
+            },
+        ]
+    },
+    {
+        icon: 'bulb',
+        key: '/system',
+        subs: [
+            { key: '/main/system/config', icon: '' },
+            { key: '/main/system/user', icon: '' },
+        ]
+    },
+]
 class Header extends Component {
     constructor(props) {
         super()
         this.state = {
             theme: "light",
-            menus: [
-                {
-                    icon: 'page',
-                    key: '/main'
-                }, {
-                    icon: 'bulb',
-                    key: '/main/meeting',
-                    subs: [
-                        { key: '/main/meeting/blue',  icon: '' },
-                        { key: '/main/meeting/meetCreate',  icon: '' },
-                        { key: '/main/meeting/ConferenceTemplate',  icon: '' },
-                        { key: '/main/meeting/ScheduledConference', icon: '' },
-                        { key: '/main/meeting/HistoryConference', icon: '' },
-                    ]
-                },
-                {
-                    icon: 'bulb',
-                    key: '/device',
-                    subs: [
-                        { key: '/main/device/sites',icon: '' },
-                        { key: '/main/device/mcu',  icon: '' },
-                        { key: '/main/device/sc', icon: '' },
-                        {
-                            key: '/main/device/SoftwareManage',
-                            icon: '',
-                            subs: [
-                                { key: '/main/device/SoftwareManage', icon: '' },
-                                { key: '/main/device/DeviceUpgrade',  icon: '' },
-                            ]
-                        },
-                    ]
-                },
-                {
-                    icon: 'bulb',
-                    key: '/system',
-                    subs: [
-                        { key: '/main/system/config/', icon: '' },
-                        { key: '/main/system/user', icon: '' },
-                    ]
-                },
-            ]
         }
         match = props.match;
     }
@@ -81,14 +81,12 @@ class Header extends Component {
         return <div className={cssObj.navStyle}>
             <div className={cssObj.LogoBox}><Logo width='120px' height='45px' float='left'></Logo></div>
             <Menu
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
                 theme={this.state.theme}
                 mode="horizontal"
                 className={cssObj.middleNav}
             >
                 {
-                    this.state.menus.map(item => {
+                    menus.map(item => {
                         return item.subs && item.subs.length > 0 ? this.renderSubMenu(item) : this.renderMenuItem(item)
                     })
                 }
