@@ -5,6 +5,10 @@ import Logo from '@/components/Logo/Logo'
 import LangDrop from '@/components/LangDrop/LangDrop'
 import cssObj from './Header.css'
 import intl from '@/config/i18n'
+import zh_CN from './locale/zh_CN'
+import en_US from './locale/en_US'
+intl.options.locales['zh-CN'] = zh_CN;
+intl.options.locales['en-US'] = en_US;
 const SubMenu = Menu.SubMenu;
 let match = {}
 const menus = [

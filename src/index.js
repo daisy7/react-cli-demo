@@ -4,6 +4,9 @@ import './index.css';
 import App from './App'
 import * as serviceWorker from './serviceWorker';
 
+import sign from './tools/url_sign'
+
+console.log(sign("localhost:3000","1234567890"))
 
 // const sdk = require('./app.bundle.js')
 /* eslint-disable */
