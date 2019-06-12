@@ -1,0 +1,20 @@
+.scrollDiv {
+    height: 523px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #D0DDE0;
+    border-top: none;
+    background-color: white !important;
+}
+.GroupTitle {
+    /* background-image: url(../../../../images/box_bg4.png); */
+    background-repeat: repeat-x;
+    color: #383C3D;
+    font-size: 12px;
+    padding: 0 0 0 20px;
+    height: 20px;
+    line-height: 20px;
+    border-bottom: 1px solid #C2D3D8;
+    border-top: 1px solid #C2D3D8;
+    margin-bottom: 15px;
+}
