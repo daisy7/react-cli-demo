@@ -8,7 +8,8 @@ import intl, { moment } from '@/config/i18n'
 import { Calendar, Menu, Icon } from 'antd';
 import LangDrop from '@/components/LangDrop/LangDrop'
 import { Route, Link } from 'react-router-dom';
-
+import zh_CN from './locale/zh_CN'
+import en_US from './locale/en_US'
 let match = {};
 let baseUrl = ""
 class Login extends Component {
@@ -20,6 +21,8 @@ class Login extends Component {
         }
         match = props.match;
         baseUrl = match.url;
+        Object.assign(intl.options.locales['zh-CN'], zh_CN);
+    Object.assign(intl.options.locales['en-US'], en_US);
     }
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.match)
@@ -39,15 +42,18 @@ class Login extends Component {
                     mode="vertical">
                     <Menu.Item key="register">
                         <Icon type="mail" />
-                        <Link to={`${baseUrl}/register/test`}>{intl.get('register')}</Link>
+                        {intl.get('register')}
+                        <Link to={`${baseUrl}/register/test`}></Link>
                     </Menu.Item>
                     <Menu.Item key="login">
                         <Icon type="mail" />
-                        <Link to={{ pathname: `${baseUrl}/login`, query: { name: "test" } }}>{intl.get('login')}</Link>
+                        {intl.get('login')}
+                        <Link to={{ pathname: `${baseUrl}/login`, query: { name: "test" } }}></Link>
                         {/* <Link to={`${baseUrl}/login?name=test`}>{intl.get('login')}</Link> */}
                     </Menu.Item>
                     <Menu.Item key="app">
-                        <Icon type="appstore" />TE Desktop下载
+                        <Icon type="appstore" />
+                       {intl.get('TEDesktop')}
                     </Menu.Item>
                     <Menu.Item key="lang">
                         <LangDrop></LangDrop>
