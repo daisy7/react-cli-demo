@@ -1,11 +1,50 @@
 import React, { Component } from "react";
 import cssObj from './Conference.css'
-import { Form, Input, Slider, Select, Checkbox } from 'antd';
+import { Form, Input, Slider, Select, Checkbox, Table,Modal,Radio  } from 'antd';
 import { regExpConfig } from '@/config/Reg.confing'
 import intl, { SUPPOER_LOCALES } from '@/config/i18n'
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
+const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
+    // eslint-disable-next-line
+    class extends React.Component {
+      render() {
+        const { visible, onCancel, onCreate, form } = this.props;
+        const { getFieldDecorator } = form;
+        return (
+          <Modal
+            visible={visible}
+            title="Create a new collection"
+            okText="Create"
+            onCancel={onCancel}
+            onOk={onCreate}
+          >
+            <Form layout="vertical">
+              <Form.Item label="Title">
+                {getFieldDecorator('title', {
+                  rules: [{ required: true, message: 'Please input the title of collection!' }],
+                })(<Input />)}
+              </Form.Item>
+              <Form.Item label="Description">
+                {getFieldDecorator('description')(<Input type="textarea" />)}
+              </Form.Item>
+              <Form.Item className="collection-create-form_last-form-item">
+                {getFieldDecorator('modifier', {
+                  initialValue: 'public',
+                })(
+                  <Radio.Group>
+                    <Radio value="public">Public</Radio>
+                    <Radio value="private">Private</Radio>
+                  </Radio.Group>,
+                )}
+              </Form.Item>
+            </Form>
+          </Modal>
+        );
+      }
+    },
+  );
 const marks = {
     0: '不灵敏',
     100: {
@@ -15,7 +54,91 @@ const marks = {
         label: '灵敏',
     },
 }
+const data = [
+    {
+        key: '1',
+        name: 'John Brown',
+        age: 32,
+        address: 'New York No. 1 Lake Park',
+    },
+    {
+        key: '2',
+        name: 'Jim Green',
+        age: 42,
+        address: 'London No. 1 Lake Park',
+    },
+    {
+        key: '3',
+        name: 'Joe Black',
+        age: 32,
+        address: 'Sidney No. 1 Lake Park',
+    },
+    {
+        key: '4',
+        name: 'Disabled User',
+        age: 99,
+        address: 'Sidney No. 1 Lake Park',
+    },
+];
+const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: record => ({
+        disabled: record.name === 'Disabled User', // Column configuration not to be checked
+        name: record.name,
+    }),
+};
 class Conference extends Component {
+    constructor(props){
+        super(props);
+        this.state={};
+        this.columns = [
+            {
+                title: 'Name',
+                dataIndex: 'name',
+                render: text => <a href="javascript:;">{text}</a>,
+            },
+            {
+                title: 'Age',
+                dataIndex: 'age',
+            },
+            {
+                title: 'Address',
+                dataIndex: 'address',
+            },
+            { title: 'Action', key: 'operation', render: () => <a href="javascript:;" onClick={() => this.showModal()}>edit</a> },
+        ];
+    }
+    state = {
+        visible: false,
+    };
+
+    showModal = () => {
+        this.setState({ visible: true });
+    };
+
+    handleCancel = () => {
+        this.setState({ visible: false });
+    };
+
+    handleCreate = () => {
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            console.log('Received values of form: ', values);
+            form.resetFields();
+            this.setState({ visible: false });
+        });
+    };
+
+    saveFormRef = formRef => {
+        this.formRef = formRef;
+    };
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
@@ -28,8 +151,16 @@ class Conference extends Component {
                 sm: { span: 4 },
             },
         };
+
         return <div className={cssObj.scrollDiv}>
             <div className={cssObj.GroupTitle}>会议参数</div>
+            <Table rowSelection={rowSelection} columns={this.columns} dataSource={data} />,
+            <CollectionCreateForm
+                wrappedComponentRef={this.saveFormRef}
+                visible={this.state.visible}
+                onCancel={this.handleCancel}
+                onCreate={this.handleCreate}
+            />
             <Form>
                 <FormItem
                     {...formItemLayout}
@@ -508,14 +639,14 @@ class Conference extends Component {
                 >
                     {getFieldDecorator('ConferenceSwitch', {
                         initialValue: 30,
-                        normalize: (e) => e?parseInt(e):'',
+                        normalize: (e) => e ? parseInt(e) : '',
                         rules: [
                             { required: true, message: 'Please input your ConferenceSwitch ' },
-                            { type: 'number', min: 15, max: 50, message: 'must be 15~50'},
+                            { type: 'number', min: 15, max: 50, message: 'must be 15~50' },
                             // { pattern: regExpConfig.ConferenceSwitch, message: ' 15~50' }
                         ],
                     })(
-                        <Input/>
+                        <Input />
                     )}
                 </FormItem>
             </Form>
