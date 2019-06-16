@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import cssObj from './Conference.css'
-import { Form, Input, Slider, Select, Checkbox, Table, Modal, Radio } from 'antd';
+import { Form, Input, Slider, Select, Checkbox, Table, Modal, Button } from 'antd';
 import { regExpConfig } from '@/config/Reg.confing'
 import intl, { SUPPOER_LOCALES } from '@/config/i18n'
 const FormItem = Form.Item;
@@ -24,7 +24,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                         <Form.Item>
                             {getFieldDecorator('key', {
                                 initialValue: data.key,
-                            })(<Input hidden/>)}
+                            })(<Input hidden />)}
                         </Form.Item>
                         <Form.Item label="name">
                             {getFieldDecorator('name', {
@@ -59,8 +59,11 @@ const marks = {
         label: '灵敏',
     },
 }
+let selectedData = [];
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
+        selectedData.length=0
+        selectedData.push(...selectedRowKeys);
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
     getCheckboxProps: record => ({
@@ -85,11 +88,11 @@ class Conference extends Component {
                 title: 'Address',
                 dataIndex: 'address',
             },
-            { title: 'Action', key: 'operation', render: (text, record) => <a href="javascript:;" onClick={() => this.showModal(record.key)}>edit</a> },
+            // { title: 'Action', key: 'operation', render: (text, record) => <a href="javascript:;" onClick={() => this.showModal(record.key)}>edit</a> },
         ];
     }
     state = {
-        data:  [
+        data: [
             {
                 key: '1',
                 name: 'John Brown',
@@ -116,18 +119,17 @@ class Conference extends Component {
             },
         ],
         visible: false,
-        collectionData:{}
+        collectionData: {},
     }
-    showModal = (key) => {
+    showModal = (key=-1) => {
         console.log(key)
         const newData = [...this.state.data];
         const index = newData.findIndex(item => key === item.key);
         if (index > -1) {
             this.setState({ collectionData: newData[index], visible: true });
         } else {
-            console.log(index)
+            this.setState({ collectionData: {}, visible: true });
         }
-        console.log(this.state)
     };
 
     handleCancel = () => {
@@ -147,14 +149,14 @@ class Conference extends Component {
             if (index > -1) {
                 const item = newData[index];
                 newData.splice(index, 1, {
-                  ...item,
-                  ...values,
+                    ...item,
+                    ...values,
                 });
-                this.setState({ data: newData});
-              } else {
+                this.setState({ data: newData });
+            } else {
                 newData.push(values);
-                this.setState({ data: newData});
-              }
+                this.setState({ data: newData });
+            }
             form.resetFields();
             this.setState({ visible: false });
         });
@@ -179,6 +181,18 @@ class Conference extends Component {
 
         return <div className={cssObj.scrollDiv}>
             <div className={cssObj.GroupTitle}>会议参数</div>
+            <Button onClick={() => {
+                if(selectedData.length==0){
+                    this.showModal()
+                }
+                else if(selectedData.length==1){
+                    this.showModal(selectedData[0])
+                }
+                else{
+                    console.log('不能选中多个')
+                }
+                
+                }}>新增/编辑</Button>
             <Table rowSelection={rowSelection} columns={this.columns} dataSource={this.state.data} />,
             <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
