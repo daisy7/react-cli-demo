@@ -6,11 +6,11 @@ import * as serviceWorker from './serviceWorker';
 
 import sign from './tools/url_sign'
 
-console.log(sign("localhost:3000","1234567890"))
+// console.log(sign("localhost:3000","1234567890"))
 
 // const sdk = require('./app.bundle.js')
 /* eslint-disable */
-console.log(hwSDK);
+// console.log(hwSDK);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
