@@ -50,6 +50,25 @@ const types = [
     { key: "2", value: "字幕" },
     { key: "3", value: "短消息" }
 ]
+const menu = (
+    <Menu>
+      <Menu.Item>
+        <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
+          1st menu item
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
+          2nd menu item
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
+          3rd menu item
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
 class Conference extends Component {
     constructor(props) {
         super(props)
@@ -60,6 +79,17 @@ class Conference extends Component {
         }, {
             title: '内容',
             dataIndex: 'content',
+        },
+        {
+            title: '操作',
+            dataIndex: 'action',
+            render: text => {
+                return <Dropdown overlay={menu}>
+                    <a className="ant-dropdown-link" href="#">
+                        Hover me <Icon type="down" />
+                    </a>
+                </Dropdown>
+            }
         }];
         this.state = {
             visible: false,
