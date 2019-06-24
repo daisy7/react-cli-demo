@@ -10,7 +10,7 @@ import sign from './tools/url_sign'
 
 // const sdk = require('./app.bundle.js')
 /* eslint-disable */
-// console.log(hwSDK);
+console.log(csm);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

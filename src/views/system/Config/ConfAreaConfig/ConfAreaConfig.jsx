@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import cssObj from './ConfAreaConfig.css'
 import { Button, Select, Form, Table, Input, Menu, Dropdown, Icon } from 'antd';
+const InputGroup = Input.Group;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const kbitArry = [
@@ -31,6 +32,15 @@ const RateCreateForm = Form.create()(
     render() {
       const { form } = this.props;
       const { getFieldDecorator } = form;
+      const prefixSelector = getFieldDecorator('prefix', {
+        initialValue: '86',
+      })(
+        // <Select style={{ width: 70 }}>
+        //   <Option value="86">+86</Option>
+        //   <Option value="87">+87</Option>
+        // </Select>,
+        <Input style={{ width: 90 }} />
+      );
       const formItemLayout = {
         labelCol: {
           xs: { span: 12 },
@@ -41,9 +51,24 @@ const RateCreateForm = Form.create()(
           sm: { span: 4 },
         },
       };
+      const pformItemLayout = {
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 8 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 16 },
+        },
+      };
       return (
 
-        <Form>
+        <Form {...pformItemLayout}>
+          <Form.Item label="Phone Number">
+            {getFieldDecorator('phone', {
+              rules: [{ required: true, message: 'Please input your phone number!' }],
+            })(<Input addonBefore={prefixSelector} style={{ width: '50%' }} />)}
+          </Form.Item>
           <FormItem
             {...formItemLayout}
             label="最小速率下限"

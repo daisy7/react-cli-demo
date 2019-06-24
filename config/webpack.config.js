@@ -27,7 +27,7 @@ const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpack
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
 const postcssNormalize = require('postcss-normalize');
-
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
@@ -273,7 +273,7 @@ module.exports = function (webpackEnv) {
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
         '@': path.join(__dirname, '../src/'),
-        '~':path.join(__dirname, '../node_modules/')
+        '~': path.join(__dirname, '../node_modules/')
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -477,8 +477,14 @@ module.exports = function (webpackEnv) {
       ],
     },
     plugins: [
+      new AddAssetHtmlPlugin([
+        { filepath: path.resolve(__dirname, '../src/axios.min.js') },
+        { filepath: path.resolve(__dirname, '../src/sockjs.min.js') },
+        { filepath: path.resolve(__dirname, '../src/stomp.min.js') },
+        { filepath: path.resolve(__dirname, '../src/vendor.dll.js') },
+      ]),
       new webpack.ProvidePlugin({
-        hwSDK:path.join(__dirname, '../src/app.bundle.js')
+        csm: path.join(__dirname, '../src/app.bundle.js')
       }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
