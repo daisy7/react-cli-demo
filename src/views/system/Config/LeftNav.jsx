@@ -22,10 +22,14 @@ class LeftNav extends Component {
                 icon: 'inbox',
                 key: '/main/system/config/ConfAreaConfig'
             },
+            {
+                icon: 'inbox',
+                key: '/main/system/config/DeviceConfig'
+            },
         ]
     }
     componentDidMount(){
-        history.push({ pathname: '/main/system/config/ConferenceConfig' })
+        history.push({ pathname: this.state.meaus[this.state.meaus.length - 1].key })
     }
     renderMenuItem = ({ key, icon }) => {
         return (
@@ -40,7 +44,7 @@ class LeftNav extends Component {
     render() {
         return <div style={{ width: 280 }}>
             <Menu
-                defaultSelectedKeys={['/main/system/config/ConferenceConfig']}
+                defaultSelectedKeys={[this.state.meaus[this.state.meaus.length - 1].key]}
                 mode="inline"
                 theme="light"
                 className={cssObj.leftnav}

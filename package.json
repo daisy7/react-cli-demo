@@ -72,7 +72,12 @@
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-unused-expressions": "off",
+      "no-restricted-globals": "off",
+      "no-undef": "off"
+    }
   },
   "browserslist": {
     "production": [

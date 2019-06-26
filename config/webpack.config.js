@@ -482,9 +482,10 @@ module.exports = function (webpackEnv) {
         { filepath: path.resolve(__dirname, '../src/sockjs.min.js') },
         { filepath: path.resolve(__dirname, '../src/stomp.min.js') },
         { filepath: path.resolve(__dirname, '../src/vendor.dll.js') },
+        { filepath: path.resolve(__dirname, '../src/app.bundle.js') }
       ]),
       new webpack.ProvidePlugin({
-        csm: path.join(__dirname, '../src/app.bundle.js')
+        csm: path.join(__dirname, '../src/app.bundle.js'),
       }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(

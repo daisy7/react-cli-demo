@@ -4,6 +4,7 @@ import LeftNav from './LeftNav'
 import { Route } from 'react-router-dom';
 import Conference from './Conference/Conference'
 import ConfAreaConfig from './ConfAreaConfig/ConfAreaConfig'
+import DeviceConfig from './DeviceConfig/DeviceConfig'
 import cssObj from './Config.css';
 const { Sider, Content } = Layout;
 let match = '';
@@ -42,6 +43,7 @@ class Config extends Component {
                         <div className={cssObj.scrollDiv}>
                             <Route path={`${match.url}/ConferenceConfig`} component={Conference}></Route>
                             <Route path={`${match.url}/ConfAreaConfig`} component={ConfAreaConfig}></Route>
+                            <Route path={`${match.url}/DeviceConfig`} component={DeviceConfig}></Route>
                         </div>
                     </Content>
                 </Layout>
