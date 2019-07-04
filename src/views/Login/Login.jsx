@@ -3,7 +3,6 @@ import cssObj from "./Login.css";
 import Logo from "@/components/Logo/Logo.jsx"
 import LoginContain from "./LoginContain/LoginContain"
 import Register from "./Register"
-import history from '@/config/history';
 import intl, { moment } from '@/config/i18n'
 import { Calendar, Menu, Icon } from 'antd';
 import LangDrop from '@/components/LangDrop/LangDrop'
@@ -66,7 +65,7 @@ class Login extends Component {
                     <Logo width="400px" height="90px"></Logo>
                     <Route path={`${baseUrl}/login`} component={LoginContain} />
                     <Route path={`${baseUrl}/register/:name`} component={Register} />
-                    <button onClick={() => history.push({ pathname: '/main' })}>{intl.get('redirect')}</button>
+                    <button onClick={() => this.props.history.push({ pathname: '/main' })}>{intl.get('redirect')}</button>
                 </div>
                 <div style={{ width: 319, border: '1px solid #d9d9d9', borderRadius: 4 }}>
                     <Calendar fullscreen={false} value={moment()} />

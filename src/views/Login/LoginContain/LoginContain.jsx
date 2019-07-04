@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import history from '@/config/history';
 import { regExpConfig } from '@/config/Reg.confing'
 import cssObj from './LoginContain.css'
 import intl from '@/config/i18n'
@@ -41,10 +40,8 @@ class LoginContain extends Component {
           clearCookie('userName');
           clearCookie('password');
         }
-        history.push({ pathname: '/main' })
-
+        this.props.history.push({ pathname: '/main' })
         // sdk.SMCSDK_User_Auth.login(values)
-
       }
     });
   }

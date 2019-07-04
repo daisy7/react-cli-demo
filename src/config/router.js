@@ -1,10 +1,9 @@
 import React from 'react';
-import { Router, Route, Switch, Redirect } from 'react-router-dom';
-import history from '@/config/history'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import * as base from '@/views'
 
 const BasicRoute = () => (
-    <Router history={history}>
+    <Router>
         <Switch>
             <Route exact  path="/" render={() => {
                 return <Redirect to="/user/login" />

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Menu, Icon } from 'antd';
 import cssObj from './Config.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink ,withRouter} from 'react-router-dom';
 import intl from '@/config/i18n'
-import history from '@/config/history';
 import zh_CN from './locale/zh_CN'
 import en_US from './locale/en_US'
 class LeftNav extends Component {
@@ -29,7 +28,7 @@ class LeftNav extends Component {
         ]
     }
     componentDidMount(){
-        history.push({ pathname: this.state.meaus[this.state.meaus.length - 1].key })
+        this.props.history.push({ pathname: this.state.meaus[this.state.meaus.length - 1].key })
     }
     renderMenuItem = ({ key, icon }) => {
         return (
@@ -58,4 +57,4 @@ class LeftNav extends Component {
         </div>
     }
 }
-export default LeftNav
+export default withRouter(LeftNav)
