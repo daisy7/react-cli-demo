@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { regExpConfig } from '@/config/Reg.confing'
 import cssObj from './LoginContain.css'
-import intl from '@/config/i18n'
+// import intl from '@/config/i18n'
 import { setCookie, clearCookie,getCookie } from '@/tools/cookie'
+import { FormattedMessage  } from 'react-intl';
 
 // import sdk from '@/sdk.js'
 const FormItem = Form.Item;
@@ -58,7 +59,7 @@ class LoginContain extends Component {
               { pattern: regExpConfig.policeNo, message: '账号4-10位数字或字母组成' }
             ],
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder={intl.get('username')} />
+            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="" />
           )}
         </FormItem>
         <FormItem>
@@ -69,7 +70,7 @@ class LoginContain extends Component {
               { pattern: regExpConfig.pwd, message: '密码由6-16位数字或者字母组成' },
             ],
           })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder={intl.get('password')} />
+            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="" />
           )}
         </FormItem>
         <FormItem>
@@ -77,10 +78,10 @@ class LoginContain extends Component {
             valuePropName: 'checked',
             initialValue: true,
           })(
-            <Checkbox >{intl.get('remember_me')}</Checkbox>
+            <Checkbox ></Checkbox>
           )}
           <Button type="primary" htmlType="submit" className={cssObj.formButton}>
-            {intl.get('login')}
+          {/* <FormattedMessage id="login" /> */}
           </Button>
         </FormItem>
       </Form>

@@ -1,9 +1,14 @@
-import intl from 'react-intl-universal';
+import { addLocaleData, IntlProvider } from 'react-intl';
+import en from 'react-intl/locale-data/en';
+import zh from 'react-intl/locale-data/zh';
 import enUS from '@/locale/en_US';
 import zhCN from '@/locale/zh_CN';
 import antd_zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import React, { Component } from 'react';
+
+addLocaleData([...en, ...zh]);
 
 const locales = {
     'en-US': {
@@ -26,19 +31,6 @@ const default_locale = function () {
     }
 }()
 
-intl.init({
-    // init method will load CLDR locale data according to currentLocale
-    // react-intl-universal is singleton, so you should init it only once in your app
-    currentLocale: default_locale,
-    locales: function () {
-        let locale = {}
-        for (var key in locales) {
-            locale[key] = locales[key].custom;
-        }
-        return locale
-    }()
-})
-
 const SUPPOER_LOCALES = function () {
     let locales_t = []
     for (var key in locales) {
@@ -50,13 +42,15 @@ const SUPPOER_LOCALES = function () {
     return locales_t
 }();
 let antd_locale = undefined;
-function setLang(e) {
+let locale = default_locale
+const setLang = e => {
     if (locales.hasOwnProperty(e)) {
-        intl.options.currentLocale = e;
+        // intl.options.currentLocale = e;
         let value = locales[e]
         antd_locale = value.antd
         moment.locale(value.moment)
         localStorage.setItem('lang_type', e);
+        locale = e;
     }
     else {
         console.error(`no key is ${e} to set locale`)
@@ -65,5 +59,26 @@ function setLang(e) {
 
 setLang(localStorage.getItem('lang_type') || default_locale)
 
-export default intl
-export { SUPPOER_LOCALES, antd_locale, moment, setLang }
+const setLocale=(locale,messages)=>{
+    if (locales.hasOwnProperty(locale)) {
+        Object.assign(locales[locale].custom, messages);
+        console.log(locales[locale].custom)
+    }
+    else {
+        console.error(`no key is ${e} to set locale`)
+    }
+}
+
+class Intl extends Component {
+    render() {
+        let { children } = this.props;
+        return (
+            // eslint-disable-next-line react/react-in-jsx-scope
+            <IntlProvider locale={locale} messages={locales[locale].custom}>
+                {children}
+            </IntlProvider>
+        )
+    }
+};
+export default Intl
+export { SUPPOER_LOCALES, antd_locale, moment, setLang, IntlProvider, default_locale,setLocale }

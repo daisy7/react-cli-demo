@@ -3,12 +3,13 @@ import cssObj from "./Login.css";
 import Logo from "@/components/Logo/Logo.jsx"
 import LoginContain from "./LoginContain/LoginContain"
 import Register from "./Register"
-import intl, { moment } from '@/config/i18n'
+import  { moment,setLocale } from '@/config/i18n'
 import { Calendar, Menu, Icon } from 'antd';
 import LangDrop from '@/components/LangDrop/LangDrop'
 import { Route, Link } from 'react-router-dom';
 import zh_CN from './locale/zh_CN'
 import en_US from './locale/en_US'
+import { FormattedMessage  } from 'react-intl';
 let match = {};
 let baseUrl = ""
 class Login extends Component {
@@ -20,8 +21,8 @@ class Login extends Component {
         }
         match = props.match;
         baseUrl = match.url;
-        Object.assign(intl.options.locales['zh-CN'], zh_CN);
-    Object.assign(intl.options.locales['en-US'], en_US);
+    setLocale('zh-CN',zh_CN)
+    setLocale('en-US',en_US)
     }
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.match)
@@ -41,31 +42,32 @@ class Login extends Component {
                     mode="vertical">
                     <Menu.Item key="register">
                         <Icon type="mail" />
-                        {intl.get('register')}
+                        {/* {intl.get('register')} */}
+                        <FormattedMessage id="register" />
                         <Link to={`${baseUrl}/register/test`}></Link>
                     </Menu.Item>
                     <Menu.Item key="login">
                         <Icon type="mail" />
-                        {intl.get('login')}
+                        {/* {intl.get('login')} */}
                         <Link to={{ pathname: `${baseUrl}/login`, query: { name: "test" } }}></Link>
                         {/* <Link to={`${baseUrl}/login?name=test`}>{intl.get('login')}</Link> */}
                     </Menu.Item>
                     <Menu.Item key="app">
                         <Icon type="appstore" />
-                       {intl.get('TEDesktop')}
+                       {/* {intl.get('TEDesktop')} */}
                     </Menu.Item>
                     <Menu.Item key="lang">
                         <LangDrop></LangDrop>
                     </Menu.Item>
                     <Menu.Item key="alipay">
-                        <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{intl.get('help')}</a>
+                        {/* <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{intl.get('help')}</a> */}
                     </Menu.Item>
                 </Menu>
                 <div className={cssObj.bgDiv}>
                     <Logo width="400px" height="90px"></Logo>
                     <Route path={`${baseUrl}/login`} component={LoginContain} />
                     <Route path={`${baseUrl}/register/:name`} component={Register} />
-                    <button onClick={() => this.props.history.push({ pathname: '/main' })}>{intl.get('redirect')}</button>
+                    {/* <button onClick={() => this.props.history.push({ pathname: '/main' })}>{intl.get('redirect')}</button> */}
                 </div>
                 <div style={{ width: 319, border: '1px solid #d9d9d9', borderRadius: 4 }}>
                     <Calendar fullscreen={false} value={moment()} />
