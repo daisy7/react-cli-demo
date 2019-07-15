@@ -6,10 +6,11 @@ const BasicRoute = () => (
     <Router>
         <Switch>
             <Route exact  path="/" render={() => {
-                return <Redirect to="/user/login" />
+                return <Redirect to="/newFunc" />
             }} />
             <Route path="/user" component={base.Login} />
             {/* <Route path="/main" component={base.Main} /> */}
+            <Route path="/newFunc" component={base.newFunc} />
         </Switch>
     </Router>
 );
