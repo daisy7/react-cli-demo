@@ -9,7 +9,7 @@ const BasicRoute = () => (
                 return <Redirect to="/newFunc" />
             }} />
             <Route path="/user" component={base.Login} />
-            {/* <Route path="/main" component={base.Main} /> */}
+            <Route path="/main" component={base.Main} />
             <Route path="/newFunc" component={base.newFunc} />
         </Switch>
     </Router>

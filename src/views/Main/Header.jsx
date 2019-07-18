@@ -4,11 +4,13 @@ import { NavLink } from 'react-router-dom';
 import Logo from '@/components/Logo/Logo'
 import LangDrop from '@/components/LangDrop/LangDrop'
 import cssObj from './Header.css'
-import intl from '@/config/i18n'
 import zh_CN from './locale/zh_CN'
 import en_US from './locale/en_US'
-intl.options.locales['zh-CN'] = zh_CN;
-intl.options.locales['en-US'] = en_US;
+import { injectIntl } from 'react-intl';
+import  { setLocale } from '@/config/i18n'
+
+setLocale('zh-CN',zh_CN);
+setLocale('en-US',en_US);
 const SubMenu = Menu.SubMenu;
 let match = {}
 const menus = [
@@ -62,7 +64,7 @@ class Header extends Component {
     }
     renderSubMenu = ({ key, icon, subs }) => {
         return (
-            <Menu.SubMenu key={key} title={<span>{icon && <Icon type={icon} />}<span>{intl.get(key.split('/').filter(i => i).pop())}</span></span>}>
+            <Menu.SubMenu key={key} title={<span>{icon && <Icon type={icon} />}<span>{this.props.intl.formatMessage({ id: key.split('/').filter(i => i).pop() })}</span></span>}>
                 {
                     subs && subs.map(item => {
                         return item.subs && item.subs.length > 0 ? this.renderSubMenu(item) : this.renderMenuItem(item)
@@ -76,7 +78,7 @@ class Header extends Component {
             <Menu.Item key={key}>
                 <NavLink to={key}>
                     {icon && <Icon type={icon} />}
-                    <span>{intl.get(key.split('/').filter(i => i).pop())}</span>
+                    <span>{this.props.intl.formatMessage({ id: key.split('/').filter(i => i).pop() })}</span>
                 </NavLink>
             </Menu.Item>
         )
@@ -95,16 +97,16 @@ class Header extends Component {
                     })
                 }
                 <Menu.Item key="alipay1">
-                    <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{intl.get('modfied')}</a>
+                    <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{this.props.intl.formatMessage({ id: 'modfied' })}</a>
                 </Menu.Item>
                 <Menu.Item>
                     <LangDrop></LangDrop>
                 </Menu.Item>
                 <Menu.Item key="alipay2">
-                    <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{intl.get('help')}</a>
+                    <a href="http://www.alipay.com/" ><Icon type="question-circle" theme="outlined" />{this.props.intl.formatMessage({ id: 'help' })}</a>
                 </Menu.Item>
             </Menu>
         </div>
     }
 }
-export default Header
+export default injectIntl(Header)

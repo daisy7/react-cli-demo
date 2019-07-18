@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import Conference from './Conference/Conference'
 import ConfAreaConfig from './ConfAreaConfig/ConfAreaConfig'
 import DeviceConfig from './DeviceConfig/DeviceConfig'
+import ServiceAreas from './ServiceAreas/ServiceAreas'
 import cssObj from './Config.css';
 const { Sider, Content } = Layout;
 let match = '';
@@ -44,6 +45,7 @@ class Config extends Component {
                             <Route path={`${match.url}/ConferenceConfig`} component={Conference}></Route>
                             <Route path={`${match.url}/ConfAreaConfig`} component={ConfAreaConfig}></Route>
                             <Route path={`${match.url}/DeviceConfig`} component={DeviceConfig}></Route>
+                            <Route path={`${match.url}/ServiceAreas`} component={ServiceAreas}></Route>
                         </div>
                     </Content>
                 </Layout>

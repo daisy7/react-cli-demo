@@ -1,0 +1,21 @@
+.GroupTitle {
+    background-image:url(../../../../images/box_bg4.png);
+    background-repeat: repeat-x;
+    background-size:100%;
+    border: 1px solid #D0DDE0;
+    background-color: #FFFFFF !important;
+    padding: 7px;
+    display: flex;
+    justify-content: flex-end;
+    
+}
+.buttonDiv {
+    width: 23%;
+    display: flex;
+    justify-content: space-between;
+}
+.tableScroll {
+    height: 103px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

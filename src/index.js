@@ -4,12 +4,12 @@ import './index.css';
 import App from './App'
 import * as serviceWorker from './serviceWorker';
 
-import sign from './tools/url_sign'
+// import sign from './tools/url_sign'
 
 // console.log(sign("localhost:3000","1234567890"))
 
 /* eslint-disable */
-console.log(csm);
+// console.log(csm);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
