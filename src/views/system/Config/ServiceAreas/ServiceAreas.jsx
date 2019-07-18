@@ -3,6 +3,7 @@ import { Tabs, Button, Table, Modal, Form, Input } from 'antd';
 import cssObj from './ServiceAreas.css'
 const FormItem = Form.Item;
 const { TextArea } = Input;
+const confirm = Modal.confirm;
 // 定义弹框组件
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
@@ -43,6 +44,7 @@ const CollectionCreateForm = Form.create()(
         }
     }
 );
+
 class ServiceAreas extends Component {
     constructor() {
         super()
@@ -65,12 +67,14 @@ class ServiceAreas extends Component {
             count: 1,
             isDisable: true,
             delDisable: true,
-            selectKey: 0
+            rowId: 0,
         };
     }
+    // 取消或关闭弹窗
     handleCancel = () => {
         this.setState({ visible: false });
     }
+    // 弹窗的确定事件
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
@@ -79,17 +83,13 @@ class ServiceAreas extends Component {
             }
             console.log('Received values of form: ', values);
             const newData = [...this.state.dataSource];
-            console.log(newData)
             const index = newData.findIndex(item => values.key === item.key);
-
-            console.log(index)
-            console.log(newData[index])
             if (index > -1) {
                 let item = newData[index];
                 newData.splice(index, 1, {
                     key: item.key,
-                    serveName: item.serveName,
-                    remark: item.remark
+                    serveName: values.serveName,
+                    remark: values.remark
                 });
                 this.setState({ dataSource: newData });
             } else {
@@ -109,22 +109,45 @@ class ServiceAreas extends Component {
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     }
+    // 弹窗显示
     showModal = () => {
         this.setState({ collectionData: { serveName: '', remark: '', key: this.state.count }, visible: true });
     }
+    // 点击表格的每行
     onClickRow = (record) => {
+        // let id =record.key
         return {
             onClick: () => {
                 if (record.key > -1) {
-                    this.setState({ delDisable: false, isDisable: false, selectKey: record.key });
+                    this.setState({ delDisable: false, isDisable: false, rowId: record.key });
                 }
             },
         };
     }
-    croShowModal = () => {
+    // 修改某行表格数据
+    croShowModal = (key) => {
         const newData = [...this.state.dataSource];
-        const index = newData.findIndex(item => this.state.selectKey === item.key);
+        const index = newData.findIndex(item => key === item.key);
         this.setState({ collectionData: newData[index], visible: true });
+    }
+    // 删除某行表格数据
+    handleDelete = (key) => {
+        let dataSource = [...this.state.dataSource];
+        console.log(key)
+        dataSource = dataSource.filter(item => item.key !== key)
+        this.setState({ dataSource: dataSource });
+    }
+    showConfirm = () => {
+        confirm({
+            title: '确定要删除吗？',
+            onOk: () => {
+                console.log('OK');
+                this.handleDelete(this.state.rowId)
+            },
+            onCancel: () => {
+                console.log('Cancel');
+            },
+        });
     }
     render() {
         return <div>
@@ -133,8 +156,8 @@ class ServiceAreas extends Component {
                     <Button size='small' onClick={() => {
                         this.showModal()
                     }}>添加服务区</Button>
-                    <Button size='small' disabled={this.state.isDisable} onClick={() => { this.croShowModal() }}>修改服务区</Button>
-                    <Button size='small' disabled={this.state.delDisable}>删除服务区</Button>
+                    <Button size='small' disabled={this.state.isDisable} onClick={() => { this.croShowModal(this.state.rowId) }}>修改服务区</Button>
+                    <Button size='small' disabled={this.state.delDisable} onClick={() => { this.showConfirm() }}>删除服务区</Button>
                     <Button size='small'>SBC管理</Button>
                 </div>
             </div>
