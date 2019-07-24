@@ -4,7 +4,7 @@ import Router from '@/config/router';
 import { LocaleProvider } from 'antd';
 import Intl,{ antd_locale,default_locale } from '@/config/i18n'
 import store from './store.js';
-import './App.css'
+import './App.less'
 
 class App extends React.Component {
     constructor() {
