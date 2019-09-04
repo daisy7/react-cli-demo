@@ -10,7 +10,8 @@ const BasicRoute = () => (
             }} />
             <Route path="/user" component={base.Login} />
             <Route path="/main" component={base.Main} />
-            <Route path="/newFunc" component={base.newFunc} />
+            <Route exact path="/newFunc" component={base.NewFunc.CheckAll}/>
+            <Route exact path="/newFunc/echarts" component={base.NewFunc.Echarts}/>
         </Switch>
     </Router>
 );
