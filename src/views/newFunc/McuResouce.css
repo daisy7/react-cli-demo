@@ -1,0 +1,18 @@
+.title {
+    height: 72px;
+    line-height: 72px;
+    padding: 0 30px;
+}
+.title :global(.ant-radio-group .ant-radio-wrapper){
+    margin-right: 30px;
+    font-size: 14px;
+    color: #666666;
+}
+.btnGroup {
+    margin-top: 20px;
+    float: right;
+}
+.btnGroup :global(.ant-radio-button-wrapper-checked) {
+    color: #fff;
+    background: #049DFF;
+}

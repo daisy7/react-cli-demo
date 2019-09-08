@@ -1,3 +1,4 @@
 import CheckAll from './checkAll'
-import Echarts from './echarts'
-export { CheckAll, Echarts}
+// import Echarts from './echarts'
+import McuResouce from './McuResouce'
+export { CheckAll, McuResouce}

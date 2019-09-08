@@ -11,7 +11,7 @@ const BasicRoute = () => (
             <Route path="/user" component={base.Login} />
             <Route path="/main" component={base.Main} />
             <Route exact path="/newFunc" component={base.NewFunc.CheckAll}/>
-            <Route exact path="/newFunc/echarts" component={base.NewFunc.Echarts}/>
+            <Route exact path="/newFunc/McuResouce" component={base.NewFunc.McuResouce}/>
         </Switch>
     </Router>
 );
