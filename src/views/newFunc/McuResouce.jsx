@@ -20,7 +20,59 @@ class McuResouce extends Component {
     state = {
         time: 'month',
         xType: 3,
-        timeSlot:1
+        timeSlot: 1,
+        data1: (() => {
+            let result = [];
+            for (let i = 0; i < 12; i++) {
+                result.push({
+                    "totalResource": {
+                        "h263Resource": 0,
+                        "h264Resource": Math.ceil(Math.random() * 200 + 200),
+                        "h265Resource": 0,
+                        "encryptResource": 0,
+                        "bandwidthResource": 3840000,
+                        "siteCount": 0,
+                        "audioResource": 0
+                    },
+                    "usedResource": {
+                        "h263Resource": 0,
+                        "h264Resource": Math.ceil(Math.random() * 200),
+                        "h265Resource": 0,
+                        "encryptResource": 0,
+                        "bandwidthResource": 0,
+                        "siteCount": 0,
+                        "audioResource": 0
+                    }
+                })
+            }
+            return result;
+        })(),
+        data2: (() => {
+            let result = [];
+            for (let i = 0; i < 12; i++) {
+                result.push({
+                    "totalResource": {
+                        "h263Resource": 0,
+                        "h264Resource": Math.ceil(Math.random() * 200 + 200),
+                        "h265Resource": 0,
+                        "encryptResource": 0,
+                        "bandwidthResource": 3840000,
+                        "siteCount": 0,
+                        "audioResource": 0
+                    },
+                    "usedResource": {
+                        "h263Resource": 0,
+                        "h264Resource": Math.ceil(Math.random() * 200),
+                        "h265Resource": 0,
+                        "encryptResource": 0,
+                        "bandwidthResource": 0,
+                        "siteCount": 0,
+                        "audioResource": 0
+                    }
+                })
+            }
+            return result;
+        })()
     }
     getOption() {
         const option = {
@@ -53,9 +105,34 @@ class McuResouce extends Component {
                 boundaryGap: ['20%', '20%'],
                 data: (() => {
                     switch (Number(this.state.xType)) {
-                        case 1: return range(0, 24,"点");
-                        case 2: return ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-                        case 3: return range(1, 13,"月");
+                        case 1: return (() => {
+                            let result = [];
+                            let time = new Date();
+                            for (let i = 0; i < 48 / 4; i++) {
+                                result.push(time.getMonth() + 1 + "月" + time.getDate() + "日" + time.getHours() + '点');
+                                time.setHours(time.getHours() + 4)
+                            }
+                            return result;
+                        })()
+                        case 2: return (() => {
+                            const result = [];
+                            let date = new Date();
+                            for (let i = 0; i < 14; i++) {
+                                result.push(date.getMonth() + 1 + "月" + date.getDate() + '日');
+                                date.setDate(date.getDate() + 1)
+                            }
+                            return result;
+                        })()
+                        case 3: return (() => {
+                            const result = [];
+                            let date = new Date();
+                            let days = new Date(date.getFullYear(), date.getMonth(), 0).getDate() + new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                            for (let i = 0; i < days / 3; i++) {
+                                result.push(date.getMonth() + 1 + "月" + date.getDate() + '日');
+                                date.setDate(date.getDate() + 3)
+                            }
+                            return result;
+                        })()
                         default:
                             console.log(`no matched xType ${this.state.xType}`);
                     }
@@ -73,7 +150,9 @@ class McuResouce extends Component {
                     type: 'line',
                     smooth: true,
                     symbol: 'none',
-                    data: [11, 11, 15, 13, 12, 13, 10],
+                    data: this.state.data1.map((i) => {
+                        return Math.ceil(i["usedResource"].h264Resource / i["totalResource"].h264Resource * 100);
+                    }),
                     markPoint: {
                         data: [
                             { type: 'max', name: '最大值' },
@@ -90,7 +169,9 @@ class McuResouce extends Component {
                     name: '最低气温',
                     type: 'line',
                     smooth: true,
-                    data: [1, -2, 2, 5, 3, 2, 0],
+                    data: this.state.data2.map((i) => {
+                        return Math.ceil(i["usedResource"].h264Resource / i["totalResource"].h264Resource * 100);
+                    }),
                     markPoint: {
                         data: [
                             { name: '周最低', value: -2, xAxis: 1, yAxis: -1.5 }
