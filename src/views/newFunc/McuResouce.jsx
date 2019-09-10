@@ -12,6 +12,32 @@ function range(start, end, unit) {
     }
     return result;
 }
+function mock(count) {
+    let result = [];
+    for (let i = 0; i < count; i++) {
+        result.push({
+            "totalResource": {
+                "h263Resource": 0,
+                "h264Resource": Math.ceil(Math.random() * 200 + 200),
+                "h265Resource": 0,
+                "encryptResource": 0,
+                "bandwidthResource": 3840000,
+                "siteCount": 0,
+                "audioResource": 0
+            },
+            "usedResource": {
+                "h263Resource": 0,
+                "h264Resource": Math.ceil(Math.random() * 200),
+                "h265Resource": 0,
+                "encryptResource": 0,
+                "bandwidthResource": 0,
+                "siteCount": 0,
+                "audioResource": 0
+            }
+        })
+    }
+    return result;
+}
 class McuResouce extends Component {
     constructor(props) {
         super(props);
@@ -19,60 +45,9 @@ class McuResouce extends Component {
     }
     state = {
         time: 'month',
-        xType: 3,
-        timeSlot: 1,
-        data1: (() => {
-            let result = [];
-            for (let i = 0; i < 12; i++) {
-                result.push({
-                    "totalResource": {
-                        "h263Resource": 0,
-                        "h264Resource": Math.ceil(Math.random() * 200 + 200),
-                        "h265Resource": 0,
-                        "encryptResource": 0,
-                        "bandwidthResource": 3840000,
-                        "siteCount": 0,
-                        "audioResource": 0
-                    },
-                    "usedResource": {
-                        "h263Resource": 0,
-                        "h264Resource": Math.ceil(Math.random() * 200),
-                        "h265Resource": 0,
-                        "encryptResource": 0,
-                        "bandwidthResource": 0,
-                        "siteCount": 0,
-                        "audioResource": 0
-                    }
-                })
-            }
-            return result;
-        })(),
-        data2: (() => {
-            let result = [];
-            for (let i = 0; i < 12; i++) {
-                result.push({
-                    "totalResource": {
-                        "h263Resource": 0,
-                        "h264Resource": Math.ceil(Math.random() * 200 + 200),
-                        "h265Resource": 0,
-                        "encryptResource": 0,
-                        "bandwidthResource": 3840000,
-                        "siteCount": 0,
-                        "audioResource": 0
-                    },
-                    "usedResource": {
-                        "h263Resource": 0,
-                        "h264Resource": Math.ceil(Math.random() * 200),
-                        "h265Resource": 0,
-                        "encryptResource": 0,
-                        "bandwidthResource": 0,
-                        "siteCount": 0,
-                        "audioResource": 0
-                    }
-                })
-            }
-            return result;
-        })()
+        xType: "months",
+        data1: mock(30),
+        data2: mock(30)
     }
     getOption() {
         const option = {
@@ -104,8 +79,8 @@ class McuResouce extends Component {
                 // boundaryGap: false,
                 boundaryGap: ['20%', '20%'],
                 data: (() => {
-                    switch (Number(this.state.xType)) {
-                        case 1: return (() => {
+                    switch (this.state.xType) {
+                        case "days": return (() => {
                             let result = [];
                             let time = new Date();
                             for (let i = 0; i < 48 / 4; i++) {
@@ -114,7 +89,7 @@ class McuResouce extends Component {
                             }
                             return result;
                         })()
-                        case 2: return (() => {
+                        case "weeks": return (() => {
                             const result = [];
                             let date = new Date();
                             for (let i = 0; i < 14; i++) {
@@ -123,7 +98,7 @@ class McuResouce extends Component {
                             }
                             return result;
                         })()
-                        case 3: return (() => {
+                        case "months": return (() => {
                             const result = [];
                             let date = new Date();
                             let days = new Date(date.getFullYear(), date.getMonth(), 0).getDate() + new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -227,7 +202,23 @@ class McuResouce extends Component {
         };
     }
     handleTimeChange = (e) => {
-        this.setState({ xType: e.target.value });
+        let count = 0;
+        switch(e.target.value)
+        {
+            case "days": count = 12;
+            break;
+            case "weeks": count =14;
+            break;
+            case "months": count = 30;
+            break;
+            default:console.log(`no matched type: ${e.target.value}`);
+        }
+        this.setState({ 
+            xType: e.target.value,
+            data1:mock(count),
+            data2:mock(count)
+         });
+
     }
     render() {
         return (
@@ -252,10 +243,10 @@ class McuResouce extends Component {
                     </RadioGroup>
                 </div>
                 <div className={cssObj.btnGroup}>
-                    <Radio.Group value={String(this.state.xType)} onChange={this.handleTimeChange}>
-                        <Radio.Button value="1">按天</Radio.Button>
-                        <Radio.Button value="2">按周</Radio.Button>
-                        <Radio.Button value="3">按月</Radio.Button>
+                    <Radio.Group value={this.state.xType} onChange={this.handleTimeChange}>
+                        <Radio.Button value="days">按天</Radio.Button>
+                        <Radio.Button value="weeks">按周</Radio.Button>
+                        <Radio.Button value="months">按月</Radio.Button>
                     </Radio.Group>
                 </div>
                 <ReactEcharts
