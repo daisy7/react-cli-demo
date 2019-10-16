@@ -16,29 +16,14 @@ function range(start, end, unit) {
     }
     return result;
 }
+let Body = [{"videoResourceUsage":0.1,"audioResourceUsage":3.0,"time":"2019-10-16 09:25:00.0"},{"videoResourceUsage":0.3,"audioResourceUsage":0.0,"time":"2019-10-16 09:40:00.0"},{"videoResourceUsage":0.3,"audioResourceUsage":0.0,"time":"2019-10-16 09:55:00.0"}];
+
 function mock(count) {
     let result = [];
+    let time=new Date('2019-10-16 09:25:00.0');
     for (let i = 0; i < count; i++) {
         result.push({
-            // 'totalResource': {
-            //     'h263Resource': 0,
-            //     'h264Resource': Math.ceil(Math.random() * 200 + 200),
-            //     'h265Resource': 0,
-            //     'encryptResource': 0,
-            //     'bandwidthResource': 3840000,
-            //     'siteCount': 0,
-            //     'audioResource':  Math.ceil(Math.random() * 200 + 200)
-            // },
-            // 'usedResource': {
-            //     'h263Resource': 0,
-            //     'h264Resource': Math.ceil(Math.random() * 200),
-            //     'h265Resource': 0,
-            //     'encryptResource': 0,
-            //     'bandwidthResource': 0,
-            //     'siteCount': 0,
-            //     'audioResource': Math.ceil(Math.random() * 200)
-            // }
-            'videoResourceUsage': Math.random(), 'audioResourceUsage': Math.random()
+            'videoResourceUsage': Math.random(), 'audioResourceUsage': Math.random(),'time':(new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours(), time.getMinutes()+i * 15).toUTCString())
         });
 
 
@@ -122,17 +107,26 @@ class McuResouce extends Component {
                 }
             },
             dataZoom: [{
-                startValue: new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours() + 1)
+                // startValue: new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours())
+                startValue:new Date(this.state.datas[0]["time"])
             }, {
                 type: 'inside'
             }],
-            grid: {
-                y2: 80
+            visualMap: {
+                pieces: [{
+                    gt: 80,
+                    lte: 100,
+                    color: '#096'
+                }]
             },
+            // grid: {
+            //     y2: 80
+            // },
             xAxis: [
                 {
                     type: 'time',
-                    splitNumber: 20
+                    // splitNumber: 20,
+                    interval:3600 * 4 * 1000
                 }],
             yAxis: [{
                 type: 'value',
@@ -150,21 +144,24 @@ class McuResouce extends Component {
                     type: 'line',
                     // showSymbol:false,
                     showAllSymbol: true,
-                    symbolSize: 3 | 6,
-                    smooth: true,
+                    symbolSize: 1 | 2,
+                    smooth: false, //true 为平滑曲线，false为直线
                     hoverAnimation:true,
                     data: (() => {
                         switch (this.state.xType) {
                         case 'days': return (() => {
                             let result = [];
                            
-                            let len = 0;
-                            while (len < this.state.datas.length) {
-                                result.push([new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours() + 1, len * 15), this.state.datas[len].videoResourceUsage.toFixed(2) * 100]);
-                                // result.push([new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours() + 1, len * 15), datas[len].videoResourceUsage.toFixed(2) * 100, datas[len].videoResourceUsage.toFixed(2) * 100]);
-                                // result.push(time.getMonth() + 1 + '月' + time.getDate() + '日' + time.getHours() + '点');
-                                len++;
-                            }
+                            // let len = 0;
+                            // while (len < this.state.datas.length) {
+                            //     result.push([new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours(), len * 15), this.state.datas[len].videoResourceUsage.toFixed(2) * 100]);
+                            //     // result.push([new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours() + 1, len * 15), datas[len].videoResourceUsage.toFixed(2) * 100, datas[len].videoResourceUsage.toFixed(2) * 100]);
+                            //     // result.push(time.getMonth() + 1 + '月' + time.getDate() + '日' + time.getHours() + '点');
+                            //     len++;
+                            // }
+                            this.state.datas.forEach(element => {
+                                result.push([new Date(element["time"]),element.videoResourceUsage.toFixed(2) * 100]);
+                            });
                             return result;
                         })();
                         case 'weeks': return (() => {
@@ -207,10 +204,30 @@ class McuResouce extends Component {
                                 }],
                                 globalCoord: false // 缺省为 false
                             },
-                            width: 4
+                            width: 2
                         }
                     },
-                   
+                    markLine: {
+                        data: [
+                            {
+                                name: 'Y 轴值为 100 的水平线',
+                                yAxis: 85,
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: 'red' // 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: 'blue' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+                        ]
+                    },
                     itemStyle: {
                         normal: {
                             borderWidth: 3,
