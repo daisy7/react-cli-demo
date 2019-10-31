@@ -12,6 +12,7 @@ const BasicRoute = () => (
             <Route path="/main" component={base.Main} />
             <Route exact path="/newFunc" component={base.NewFunc.CheckAll}/>
             <Route exact path="/newFunc/McuResouce" component={base.NewFunc.McuResouce}/>
+            <Route exact path="/newFunc/ShareNode" component={base.NewFunc.ShareNode}/>
         </Switch>
     </Router>
 );

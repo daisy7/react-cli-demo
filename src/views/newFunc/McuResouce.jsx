@@ -81,29 +81,47 @@ class McuResouce extends Component {
 
     }
     getTest() {
-        let time = new Date();
         const option = {
             title: {
                 text: '视频资源利用率'
             },
+            lineStyle: {
+                normal: {
+                    // color: '#0D994FF',
+                    // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#0D94FF' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#68BCFF' // 100% 处的颜色
+                        }],
+                        globalCoord: false // 缺省为 false
+                    },
+                    width: 2
+                }
+            },
             tooltip: {
-                trigger: 'item',
+                trigger: 'axis',
                 formatter(params) {
-                    let date = new Date(params.value[0]);
+                    // console.log(params)
+                    let date = new Date(params[0].value[0]);
                     let data = date.getFullYear() + '-'
                         + (date.getMonth() + 1) + '-'
                         + date.getDate() + ' '
                         + date.getHours() + ':'
                         + (date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes());
-                    return '利用率：' +  params.value[1] + '% <br/> 日期：' + data;
-                        
-                        
+                    return '利用率：' +  params[0].value[1] + '% <br/> 日期：' + data;
                 },
                 textStyle:{color:'#333'},
                 backgroundColor:'rgba(255,255,255,1)',
                 axisPointer:{
                     type:'line',
-                    axis:'y'
+                    axis:'x'
                 }
             },
             dataZoom: [{
@@ -113,26 +131,36 @@ class McuResouce extends Component {
                 type: 'inside'
             }],
             visualMap: {
+                show:false,
                 pieces: [{
                     gt: 80,
                     lte: 100,
-                    color: '#096'
-                }]
+                    color: '#ccc'
+                }],
+                outOfRange: {
+                    color: '#0D94FF'
+                }
             },
-            // grid: {
-            //     y2: 80
-            // },
+            grid: {
+                y2: 80
+            },
             xAxis: [
                 {
                     type: 'time',
                     // splitNumber: 20,
-                    interval:3600 * 4 * 1000
+                    interval:3600 * 4 * 1000,
+                    splitLine: {
+                        show: false
+                    },
                 }],
             yAxis: [{
                 type: 'value',
                 scale: true,
                 max: 100,
                 min: 0,
+                splitLine: {
+                    show: false
+                },
                 splitNumber: 5,
                 axisLabel: {
                     formatter: '{value}%'
@@ -140,12 +168,12 @@ class McuResouce extends Component {
             }],
             series: [
                 {
-                    name: 'series1',
+                    name: '利用率',
                     type: 'line',
                     // showSymbol:false,
                     showAllSymbol: true,
                     symbolSize: 1 | 2,
-                    smooth: false, //true 为平滑曲线，false为直线
+                    smooth: true, //true 为平滑曲线，false为直线
                     hoverAnimation:true,
                     data: (() => {
                         switch (this.state.xType) {
@@ -187,67 +215,57 @@ class McuResouce extends Component {
                             console.log(`no matched xType ${this.state.xType}`);
                         }
                     })(),
-                    lineStyle: {
-                        normal: {
-                            // color: '#0D94FF',
-                            // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-                            color: {
-                                type: 'linear',
-                                x: 0,
-                                y: 0,
-                                x2: 0,
-                                y2: 1,
-                                colorStops: [{
-                                    offset: 0, color: '#0D94FF' // 0% 处的颜色
-                                }, {
-                                    offset: 1, color: '#68BCFF' // 100% 处的颜色
-                                }],
-                                globalCoord: false // 缺省为 false
-                            },
-                            width: 2
-                        }
-                    },
+                    
+                    // markLine: {
+                    //     data: [
+                    //         {
+                    //             name: 'Y 轴值为 100 的水平线',
+                    //             yAxis: 85,
+                    //             color: {
+                    //                 type: 'linear',
+                    //                 x: 0,
+                    //                 y: 0,
+                    //                 x2: 0,
+                    //                 y2: 1,
+                    //                 colorStops: [{
+                    //                     offset: 0, color: 'red' // 0% 处的颜色
+                    //                 }, {
+                    //                     offset: 1, color: 'blue' // 100% 处的颜色
+                    //                 }],
+                    //                 global: false // 缺省为 false
+                    //             }
+                    //         }
+                    //     ]
+                    // },
                     markLine: {
-                        data: [
-                            {
-                                name: 'Y 轴值为 100 的水平线',
-                                yAxis: 85,
-                                color: {
-                                    type: 'linear',
-                                    x: 0,
-                                    y: 0,
-                                    x2: 0,
-                                    y2: 1,
-                                    colorStops: [{
-                                        offset: 0, color: 'red' // 0% 处的颜色
-                                    }, {
-                                        offset: 1, color: 'blue' // 100% 处的颜色
-                                    }],
-                                    global: false // 缺省为 false
-                                }
-                            }
-                        ]
-                    },
-                    itemStyle: {
-                        normal: {
-                            borderWidth: 3,
-                            color: '#0D94FF'
+                        silent: true,
+                        lineStyle:{
+                            color:'red'
                         },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                position: 'outer',
-                                color: '#000000'//hover拐点颜色定义
-                            },
-
-                            labelLine: {
-                                show: true,
-                                lineStyle: {
-                                    color: 'red'
-                                }
-                            }
-                        }
+                        data: [ {
+                            yAxis: 85
+                        }]
                     },
+                    // itemStyle: {
+                    //     normal: {
+                    //         borderWidth: 3,
+                    //         color: '#0D94FF'
+                    //     },
+                    //     emphasis: {
+                    //         label: {
+                    //             show: true,
+                    //             position: 'outer',
+                    //             color: '#000000'//hover拐点颜色定义
+                    //         },
+
+                    //         labelLine: {
+                    //             show: true,
+                    //             lineStyle: {
+                    //                 color: 'red'
+                    //             }
+                    //         }
+                    //     }
+                    // },
                     areaStyle: {
                         normal: {
                             color: {

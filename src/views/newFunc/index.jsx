@@ -1,4 +1,5 @@
 import CheckAll from './checkAll'
 // import Echarts from './echarts'
 import McuResouce from './McuResouce'
-export { CheckAll, McuResouce}
+import ShareNode from './ShareNode'
+export { CheckAll, McuResouce,ShareNode}
