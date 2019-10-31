@@ -5,7 +5,7 @@ import { Radio, DatePicker } from 'antd';
 import cssObj from './McuResouce.css';
 // import {zh_CN_Device} from '@/locale/zh_CN';
 // import {en_US_Device} from '@/locale/en_US';
-import {setLocale} from '@/config/i18n';
+import { setLocale } from '@/config/i18n';
 import { FormattedMessage, injectIntl } from 'react-intl';
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
@@ -16,14 +16,15 @@ function range(start, end, unit) {
     }
     return result;
 }
-let Body = [{"videoResourceUsage":0.1,"audioResourceUsage":3.0,"time":"2019-10-16 09:25:00.0"},{"videoResourceUsage":0.3,"audioResourceUsage":0.0,"time":"2019-10-16 09:40:00.0"},{"videoResourceUsage":0.3,"audioResourceUsage":0.0,"time":"2019-10-16 09:55:00.0"}];
+let Body = [{ "videoResourceUsage": 0.1, "audioResourceUsage": 3.0, "time": "2019-10-16 09:25:00.0" }, { "videoResourceUsage": 0.3, "audioResourceUsage": 0.0, "time": "2019-10-16 09:40:00.0" }, { "videoResourceUsage": 0.3, "audioResourceUsage": 0.0, "time": "2019-10-16 09:55:00.0" }];
 
 function mock(count) {
     let result = [];
-    let time=new Date('2019-10-16 09:25:00.0');
+    // let time = new Date('2019-10-16 09:25:00.0');
+    let time = new Date();
     for (let i = 0; i < count; i++) {
         result.push({
-            'videoResourceUsage': Math.random(), 'audioResourceUsage': Math.random(),'time':(new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours(), time.getMinutes()+i * 15).toUTCString())
+            'videoResourceUsage': Math.random(), 'audioResourceUsage': Math.random(), 'time': (new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours(), time.getMinutes() + i * 15).toUTCString())
         });
 
 
@@ -38,21 +39,21 @@ class McuResouce extends Component {
         this.state = {
             // id:props.location.state.id,
             xType: 'days',
-            datas:[],
-            hasData:true,
-            emptyData:true
+            datas: [],
+            hasData: true,
+            emptyData: true
         };
     }
 
     componentWillMount() {//渲染前调用
-       
+
         this.getMcuResource('SORT_BY_DAY');
     }
     getMcuResource = (type) => {
         let statusCodeSuccess = 200;
         let dataCnt = 193;
         this.setState({
-            datas : mock(dataCnt)
+            datas: mock(dataCnt)
         });
         // let resouceCallback = res => {
         //     console.log(res);
@@ -125,8 +126,7 @@ class McuResouce extends Component {
                 }
             },
             dataZoom: [{
-                // startValue: new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours())
-                startValue:new Date(this.state.datas[0]["time"])
+                startValue: new Date(this.state.datas[0]["time"])
             }, {
                 type: 'inside'
             }],
@@ -179,16 +179,8 @@ class McuResouce extends Component {
                         switch (this.state.xType) {
                         case 'days': return (() => {
                             let result = [];
-                           
-                            // let len = 0;
-                            // while (len < this.state.datas.length) {
-                            //     result.push([new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours(), len * 15), this.state.datas[len].videoResourceUsage.toFixed(2) * 100]);
-                            //     // result.push([new Date(time.getFullYear(), time.getMonth(), time.getDate(), time.getHours() + 1, len * 15), datas[len].videoResourceUsage.toFixed(2) * 100, datas[len].videoResourceUsage.toFixed(2) * 100]);
-                            //     // result.push(time.getMonth() + 1 + '月' + time.getDate() + '日' + time.getHours() + '点');
-                            //     len++;
-                            // }
                             this.state.datas.forEach(element => {
-                                result.push([new Date(element["time"]),element.videoResourceUsage.toFixed(2) * 100]);
+                                result.push([new Date(element["time"]), element.videoResourceUsage.toFixed(2) * 100]);
                             });
                             return result;
                         })();
@@ -285,13 +277,16 @@ class McuResouce extends Component {
                             }
                         }
                     }
-                }
-            ]
-        };
-        return option;
+                })(),
+                markLine: {
+                    silent: true,
+                    data: [{
+                        yAxis: 80
+                    }]
+                },
+            }
+        })
     }
-
-
     getOptionH264() {
         const option = {
             title: {
@@ -325,36 +320,36 @@ class McuResouce extends Component {
                 boundaryGap: false,
                 data: (() => {
                     switch (this.state.xType) {
-                    case 'days': return (() => {
-                        let result = [];
-                        let time = new Date();
-                        for (let i = 0; i < 48 / 4; i++) {
-                            result.push(time.getMonth() + 1 + '月' + time.getDate() + '日' + time.getHours() + '点');
-                            time.setHours(time.getHours() + 4);
-                        }
-                        return result;
-                    })();
-                    case 'weeks': return (() => {
-                        const result = [];
-                        let date = new Date();
-                        for (let i = 0; i < 14; i++) {
-                            result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
-                            date.setDate(date.getDate() + 1);
-                        }
-                        return result;
-                    })();
-                    case 'months': return (() => {
-                        const result = [];
-                        let date = new Date();
-                        let days = new Date(date.getFullYear(), date.getMonth(), 0).getDate() + new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-                        for (let i = 0; i < days / 3; i++) {
-                            result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
-                            date.setDate(date.getDate() + 3);
-                        }
-                        return result;
-                    })();
-                    default:
-                        console.log(`no matched xType ${this.state.xType}`);
+                        case 'days': return (() => {
+                            let result = [];
+                            let time = new Date();
+                            for (let i = 0; i < 48 / 4; i++) {
+                                result.push(time.getMonth() + 1 + '月' + time.getDate() + '日' + time.getHours() + '点');
+                                time.setHours(time.getHours() + 4);
+                            }
+                            return result;
+                        })();
+                        case 'weeks': return (() => {
+                            const result = [];
+                            let date = new Date();
+                            for (let i = 0; i < 14; i++) {
+                                result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
+                                date.setDate(date.getDate() + 1);
+                            }
+                            return result;
+                        })();
+                        case 'months': return (() => {
+                            const result = [];
+                            let date = new Date();
+                            let days = new Date(date.getFullYear(), date.getMonth(), 0).getDate() + new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                            for (let i = 0; i < days / 3; i++) {
+                                result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
+                                date.setDate(date.getDate() + 3);
+                            }
+                            return result;
+                        })();
+                        default:
+                            console.log(`no matched xType ${this.state.xType}`);
                     }
                 })()
             },
@@ -460,13 +455,13 @@ class McuResouce extends Component {
     handleTimeChange = (e) => {
         let type = '';
         switch (e.target.value) {
-        case 'days': type = 'SORT_BY_DAY';
-            break;
-        case 'weeks': type = 'SORT_BY_WEEK';
-            break;
-        case 'months': type = 'SORT_BY_MONTH';
-            break;
-        default: console.log(`no matched type: ${e.target.value}`);
+            case 'days': type = 'SORT_BY_DAY';
+                break;
+            case 'weeks': type = 'SORT_BY_WEEK';
+                break;
+            case 'months': type = 'SORT_BY_MONTH';
+                break;
+            default: console.log(`no matched type: ${e.target.value}`);
         }
         // this.getMcuResource(type);
         this.setState({
@@ -475,11 +470,11 @@ class McuResouce extends Component {
     }
     render() {
         return (
-            !this.state.hasData ? (!this.state.emptyData ? 
-                <div style={{margin:'auto', textAlign:'center', marginTop:'15%'}}>
-                    <h2><FormattedMessage id="MCU_Loading"/></h2></div> :
-                <div style={{margin:'auto', textAlign:'center', marginTop:'15%'}}>
-                    <h2>资源还未上报，请先上报资源</h2></div>) : 
+            !this.state.hasData ? (!this.state.emptyData ?
+                <div style={{ margin: 'auto', textAlign: 'center', marginTop: '15%' }}>
+                    <h2><FormattedMessage id="MCU_Loading" /></h2></div> :
+                <div style={{ margin: 'auto', textAlign: 'center', marginTop: '15%' }}>
+                    <h2>资源还未上报，请先上报资源</h2></div>) :
                 (<div>
                     <div className={cssObj.title}>
                         <span style={{ color: '#333333', fontSize: '14px', marginRight: 25 }}>统计时段</span>
@@ -511,21 +506,12 @@ class McuResouce extends Component {
                     <div>
                         <ReactEcharts
                             option={this.getTest()}
-                            style={{ height: '425px', width: '2000px' }}
+                            style={{ height: '425px', width: '1300px' }}
                             className="react_for_echarts"
                         />
                     </div>
-                    <div>
-                        {/* <ReactEcharts
-                        option={this.getOptionAudio()}
-                        style={{ height: '425px', width: '1500px' }}
-                        className="react_for_echarts"
-                    /> */}
-                    </div>
-
                 </div>)
         );
     }
-
 }
 export default McuResouce;
