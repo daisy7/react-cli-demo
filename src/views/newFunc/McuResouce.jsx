@@ -16,7 +16,7 @@ function range(start, end, unit) {
     }
     return result;
 }
-let Body = [{ "videoResourceUsage": 0.1, "audioResourceUsage": 3.0, "time": "2019-10-16 09:25:00.0" }, { "videoResourceUsage": 0.3, "audioResourceUsage": 0.0, "time": "2019-10-16 09:40:00.0" }, { "videoResourceUsage": 0.3, "audioResourceUsage": 0.0, "time": "2019-10-16 09:55:00.0" }];
+let Body = [{ 'videoResourceUsage': 0.1, 'audioResourceUsage': 3.0, 'time': '2019-10-16 09:25:00.0' }, { 'videoResourceUsage': 0.3, 'audioResourceUsage': 0.0, 'time': '2019-10-16 09:40:00.0' }, { 'videoResourceUsage': 0.3, 'audioResourceUsage': 0.0, 'time': '2019-10-16 09:55:00.0' }];
 
 function mock(count) {
     let result = [];
@@ -88,7 +88,7 @@ class McuResouce extends Component {
             },
             lineStyle: {
                 normal: {
-                    // color: '#0D994FF',
+                    // color: '#0D94FF',
                     // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
                     color: {
                         type: 'linear',
@@ -103,13 +103,12 @@ class McuResouce extends Component {
                         }],
                         globalCoord: false // 缺省为 false
                     },
-                    width: 2
+                    width: 4
                 }
             },
             tooltip: {
                 trigger: 'axis',
                 formatter(params) {
-                    // console.log(params)
                     let date = new Date(params[0].value[0]);
                     let data = date.getFullYear() + '-'
                         + (date.getMonth() + 1) + '-'
@@ -126,42 +125,41 @@ class McuResouce extends Component {
                 }
             },
             dataZoom: [{
-                startValue: new Date(this.state.datas[0]["time"])
+                startValue:this.state.datas ? new Date(this.state.datas[0]['time']) : ''
             }, {
                 type: 'inside'
             }],
             visualMap: {
+                top: 10,
+                right: 10,
                 show:false,
                 pieces: [{
                     gt: 80,
                     lte: 100,
-                    color: '#ccc'
+                    color: '#FA7A4D'
                 }],
                 outOfRange: {
                     color: '#0D94FF'
                 }
             },
-            grid: {
-                y2: 80
-            },
             xAxis: [
                 {
                     type: 'time',
-                    // splitNumber: 20,
+                    splitNumber: 20,
                     interval:3600 * 4 * 1000,
                     splitLine: {
                         show: false
-                    },
+                    }
                 }],
             yAxis: [{
                 type: 'value',
                 scale: true,
                 max: 100,
                 min: 0,
+                splitNumber: 5,
                 splitLine: {
                     show: false
                 },
-                splitNumber: 5,
                 axisLabel: {
                     formatter: '{value}%'
                 }
@@ -173,91 +171,54 @@ class McuResouce extends Component {
                     // showSymbol:false,
                     showAllSymbol: true,
                     symbolSize: 1 | 2,
-                    smooth: true, //true 为平滑曲线，false为直线
+                    smooth: false, //true 为平滑曲线，false为直线
                     hoverAnimation:true,
                     data: (() => {
                         switch (this.state.xType) {
                         case 'days': return (() => {
                             let result = [];
                             this.state.datas.forEach(element => {
-                                result.push([new Date(element["time"]), element.videoResourceUsage.toFixed(2) * 100]);
+                                if(element.videoResourceUsage === 'NaN') {
+                                    element.videoResourceUsage = 0;
+                                }
+                                result.push([new Date(element['time']), element.videoResourceUsage.toFixed(2) * 100]);
                             });
+                       
                             return result;
                         })();
                         case 'weeks': return (() => {
                             const result = [];
-                            let date = new Date();
-                            for (let i = 0; i < 14; i++) {
-                                result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
-                                date.setDate(date.getDate() + 1);
-                            }
+                            this.state.datas.forEach(element => {
+                                if(element.videoResourceUsage === 'NaN') {
+                                    element.videoResourceUsage = 0;
+                                }
+                                result.push([new Date(element['time']), element.videoResourceUsage.toFixed(2) * 100]);
+                            });
                             return result;
                         })();
                         case 'months': return (() => {
                             const result = [];
-                            let date = new Date();
-                            let days = new Date(date.getFullYear(), date.getMonth(), 0).getDate() + new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-                            for (let i = 0; i < days / 3; i++) {
-                                result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
-                                date.setDate(date.getDate() + 3);
-                            }
+                            this.state.datas.forEach(element => {
+                                if(element.videoResourceUsage === 'NaN') {
+                                    element.videoResourceUsage = 0;
+                                }
+                                result.push([new Date(element['time']), element.videoResourceUsage.toFixed(2) * 100]);
+                            });
                             return result;
                         })();
                         default:
                             console.log(`no matched xType ${this.state.xType}`);
                         }
                     })(),
-                    
-                    // markLine: {
-                    //     data: [
-                    //         {
-                    //             name: 'Y 轴值为 100 的水平线',
-                    //             yAxis: 85,
-                    //             color: {
-                    //                 type: 'linear',
-                    //                 x: 0,
-                    //                 y: 0,
-                    //                 x2: 0,
-                    //                 y2: 1,
-                    //                 colorStops: [{
-                    //                     offset: 0, color: 'red' // 0% 处的颜色
-                    //                 }, {
-                    //                     offset: 1, color: 'blue' // 100% 处的颜色
-                    //                 }],
-                    //                 global: false // 缺省为 false
-                    //             }
-                    //         }
-                    //     ]
-                    // },
+                   
                     markLine: {
                         silent: true,
-                        lineStyle:{
-                            color:'red'
-                        },
                         data: [ {
-                            yAxis: 85
+                            yAxis:80,
+                            color:'#FA7A4D'
                         }]
                     },
-                    // itemStyle: {
-                    //     normal: {
-                    //         borderWidth: 3,
-                    //         color: '#0D94FF'
-                    //     },
-                    //     emphasis: {
-                    //         label: {
-                    //             show: true,
-                    //             position: 'outer',
-                    //             color: '#000000'//hover拐点颜色定义
-                    //         },
-
-                    //         labelLine: {
-                    //             show: true,
-                    //             lineStyle: {
-                    //                 color: 'red'
-                    //             }
-                    //         }
-                    //     }
-                    // },
+                 
                     areaStyle: {
                         normal: {
                             color: {
@@ -277,15 +238,10 @@ class McuResouce extends Component {
                             }
                         }
                     }
-                })(),
-                markLine: {
-                    silent: true,
-                    data: [{
-                        yAxis: 80
-                    }]
-                },
-            }
-        })
+                }
+            ]
+        };
+        return option;
     }
     getOptionH264() {
         const option = {
@@ -320,36 +276,36 @@ class McuResouce extends Component {
                 boundaryGap: false,
                 data: (() => {
                     switch (this.state.xType) {
-                        case 'days': return (() => {
-                            let result = [];
-                            let time = new Date();
-                            for (let i = 0; i < 48 / 4; i++) {
-                                result.push(time.getMonth() + 1 + '月' + time.getDate() + '日' + time.getHours() + '点');
-                                time.setHours(time.getHours() + 4);
-                            }
-                            return result;
-                        })();
-                        case 'weeks': return (() => {
-                            const result = [];
-                            let date = new Date();
-                            for (let i = 0; i < 14; i++) {
-                                result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
-                                date.setDate(date.getDate() + 1);
-                            }
-                            return result;
-                        })();
-                        case 'months': return (() => {
-                            const result = [];
-                            let date = new Date();
-                            let days = new Date(date.getFullYear(), date.getMonth(), 0).getDate() + new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-                            for (let i = 0; i < days / 3; i++) {
-                                result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
-                                date.setDate(date.getDate() + 3);
-                            }
-                            return result;
-                        })();
-                        default:
-                            console.log(`no matched xType ${this.state.xType}`);
+                    case 'days': return (() => {
+                        let result = [];
+                        let time = new Date();
+                        for (let i = 0; i < 48 / 4; i++) {
+                            result.push(time.getMonth() + 1 + '月' + time.getDate() + '日' + time.getHours() + '点');
+                            time.setHours(time.getHours() + 4);
+                        }
+                        return result;
+                    })();
+                    case 'weeks': return (() => {
+                        const result = [];
+                        let date = new Date();
+                        for (let i = 0; i < 14; i++) {
+                            result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
+                            date.setDate(date.getDate() + 1);
+                        }
+                        return result;
+                    })();
+                    case 'months': return (() => {
+                        const result = [];
+                        let date = new Date();
+                        let days = new Date(date.getFullYear(), date.getMonth(), 0).getDate() + new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                        for (let i = 0; i < days / 3; i++) {
+                            result.push(date.getMonth() + 1 + '月' + date.getDate() + '日');
+                            date.setDate(date.getDate() + 3);
+                        }
+                        return result;
+                    })();
+                    default:
+                        console.log(`no matched xType ${this.state.xType}`);
                     }
                 })()
             },
@@ -455,13 +411,13 @@ class McuResouce extends Component {
     handleTimeChange = (e) => {
         let type = '';
         switch (e.target.value) {
-            case 'days': type = 'SORT_BY_DAY';
-                break;
-            case 'weeks': type = 'SORT_BY_WEEK';
-                break;
-            case 'months': type = 'SORT_BY_MONTH';
-                break;
-            default: console.log(`no matched type: ${e.target.value}`);
+        case 'days': type = 'SORT_BY_DAY';
+            break;
+        case 'weeks': type = 'SORT_BY_WEEK';
+            break;
+        case 'months': type = 'SORT_BY_MONTH';
+            break;
+        default: console.log(`no matched type: ${e.target.value}`);
         }
         // this.getMcuResource(type);
         this.setState({
