@@ -34,7 +34,7 @@ function mock(count) {
 }
 function toLocal(data) {
     for(let i = 0; i < data.length; i++) {
-        data[i]['time'] = new Date(data[i]['time'] + "GMT");
+        data[i]['time'] = new Date(data[i]['time'].replace(/-/g,'/').slice(0,data[i]['time'].indexOf('.')) + " GMT");//兼容IE
     }
     console.log("data");
     console.log(data);
