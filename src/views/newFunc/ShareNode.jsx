@@ -10,10 +10,11 @@ const ShareNode = Form.create()(
             super();
             this.state = {
                 treeData: this.convert([
-                    { oriName: 'VC', uuid: '0',oriList:["VC1","VC2"] },
-                    { oriName: 'AD', uuid: '1',oriList:["AD1","AD2"] },
-                    { oriName: 'Tree Node', uuid: '2', oriList:[]},
-                ])
+                    { oriName: 'VC', uuid: '0', oriList: ["VC1", "VC2"] },
+                    { oriName: 'AD', uuid: '1', oriList: ["AD1", "AD2"] },
+                    { oriName: 'Tree Node', uuid: '2', oriList: [] },
+                ]),
+                expandedKeys: []
             };
         }
         convert = datas => {
@@ -23,23 +24,52 @@ const ShareNode = Form.create()(
             });
             return newDatas;
         }
-        onLoadData = treeNode =>
-            new Promise(resolve => {
-                if (treeNode.props.children) {
+        // onLoadData = treeNode =>
+        //     new Promise(resolve => {
+        //         if (treeNode.props.children) {
+        //             resolve();
+        //             return;
+        //         }
+        //         setTimeout(() => {
+        //             treeNode.props.dataRef.children = this.convert([
+        //                 { oriName: 'Child Node', uuid: `${treeNode.props.eventKey}-0`,oriList:[] },
+        //                 { oriName: 'Child Node', uuid: `${treeNode.props.eventKey}-1`,oriList:[] },
+        //             ]);
+        //             this.setState({
+        //                 treeData: [...this.state.treeData],
+        //             });
+        //             resolve();
+        //         }, 1000);
+        //     });
+        onLoadData = (key, treeNode) => {
+
+            return new Promise(resolve => {
+                console.log(treeNode);
+                let { node } = treeNode;
+                this.setState({
+                    treeNode: node.props.dataRef
+
+                });
+                if (node.props.children) {
                     resolve();
                     return;
                 }
+
                 setTimeout(() => {
-                    treeNode.props.dataRef.children = this.convert([
-                        { oriName: 'Child Node', uuid: `${treeNode.props.eventKey}-0`,oriList:[] },
-                        { oriName: 'Child Node', uuid: `${treeNode.props.eventKey}-1`,oriList:[] },
+                    node.props.dataRef.children = this.convert([
+                        { oriName: 'Child Node', uuid: `${node.props.eventKey}-0`, oriList: [] },
+                        { oriName: 'Child Node', uuid: `${node.props.eventKey}-1`, oriList: [] },
                     ]);
+                    this.state.expandedKeys.push(node.props.eventKey.toString());
                     this.setState({
                         treeData: [...this.state.treeData],
+                        expandedKeys: [...this.state.expandedKeys]
                     });
+                    console.log(this.state.expandedKeys);
                     resolve();
                 }, 1000);
             });
+        };
         renderTreeNodes = data =>
             data.map(item => {
                 if (item.children) {
@@ -71,7 +101,8 @@ const ShareNode = Form.create()(
                             <span><FormattedMessage id="EUA_RestrictQueryTip" /></span>
                         </div>
                         <div >
-                            <Tree showLine checkable loadData={this.onLoadData}>{this.renderTreeNodes(this.state.treeData)}</Tree>;
+                            <Tree showLine checkable defaultExpandAll expandedKeys={this.state.expandedKeys}
+                                onSelect={this.onLoadData}>{this.renderTreeNodes(this.state.treeData)}</Tree>;
                         </div>
                         <div>
                             <div >
