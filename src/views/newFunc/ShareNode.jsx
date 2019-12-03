@@ -42,30 +42,27 @@ const ShareNode = Form.create()(
         //         }, 1000);
         //     });
         onLoadData = (key, treeNode) => {
-
             return new Promise(resolve => {
-                console.log(treeNode);
                 let { node } = treeNode;
                 this.setState({
                     treeNode: node.props.dataRef
 
                 });
+                this.setState({
+                    expandedKeys: [...this.state.expandedKeys.indexOf(node.props.eventKey) > -1 ? this.state.expandedKeys.splice(this.state.expandedKeys.indexOf(node.props.eventKey), 1) && this.state.expandedKeys : this.state.expandedKeys.push(node.props.eventKey) && this.state.expandedKeys]
+                });
                 if (node.props.children) {
                     resolve();
                     return;
                 }
-
                 setTimeout(() => {
-                    node.props.dataRef.children = this.convert([
+                    node.props.dataRef.children=[...this.convert([
                         { oriName: 'Child Node', uuid: `${node.props.eventKey}-0`, oriList: [] },
                         { oriName: 'Child Node', uuid: `${node.props.eventKey}-1`, oriList: [] },
-                    ]);
-                    this.state.expandedKeys.push(node.props.eventKey.toString());
+                    ])];
                     this.setState({
                         treeData: [...this.state.treeData],
-                        expandedKeys: [...this.state.expandedKeys]
                     });
-                    console.log(this.state.expandedKeys);
                     resolve();
                 }, 1000);
             });
@@ -101,7 +98,7 @@ const ShareNode = Form.create()(
                             <span><FormattedMessage id="EUA_RestrictQueryTip" /></span>
                         </div>
                         <div >
-                            <Tree showLine checkable defaultExpandAll expandedKeys={this.state.expandedKeys}
+                            <Tree showLine checkable onExpand={this.onLoadData} expandedKeys={this.state.expandedKeys}
                                 onSelect={this.onLoadData}>{this.renderTreeNodes(this.state.treeData)}</Tree>;
                         </div>
                         <div>
