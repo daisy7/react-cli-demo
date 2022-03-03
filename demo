@@ -1,0 +1,17 @@
+let tableData = Array(10).fill({ "number": 1, "faultType": 2, "remark": 3, 'abc': 4 })
+tableData.push({ "number": 4, "faultType": 4, "remark": 2, 'abc': 4 })
+const mergeKeys = ["number", "faultType", "remark"]
+let spanObj = {}
+mergeKeys.forEach(key => {
+    spanObj[key] = Array(tableData.length).fill(0)
+})
+for (let i = 1; i < tableData.length; i++) {
+    let sameCount = 0
+    for (let j = 0; j < mergeKeys.length; j++) {
+        if (tableData[i][mergeKeys[j]] == tableData[i - 1][mergeKeys[j]] && sameCount == j) {
+            sameCount++;
+            spanObj[mergeKeys[j]][i] = 1
+        }
+    }
+}
+console.log(spanObj)
